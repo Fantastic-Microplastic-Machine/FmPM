@@ -1,0 +1,22 @@
+Component specification
+
+Functions:
+1. Load image
+
+2. Resize image
+
+3. Extract features
+
+4. Histogram equalizer
+
+5. Remove noise
+
+6. Dimensions extractor (size)
+
+7. Shape classification (decision tree? k-means?)
+
+8. Color extractor
+
+9. Train
+
+10. Machine learning
