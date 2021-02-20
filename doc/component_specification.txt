@@ -1,17 +1,39 @@
 Component specification
 
-Functions:
-1. Load image
+1. Name: LoadImage
+What it does: loads the .bmp image into the working notebook
+Inputs: .bmp microparticle image file 
+Outputs: image representation of the .bmp file
 
-2. Resize image
+2. Name: ResizeImage
+What it does: resizes and crops any unnecessary borders of the .bmp file
+Inputs: .bmp file from LoadImage 
+Outputs: resized and cropped image file
 
-3. Extract features
+3. HistogramEqualizer
+What it does: improve contrast of the image files
+Inputs: resized and cropped image files from ResizeImage
+Outputs: higher contrast image 
 
-4. Histogram equalizer
+4. Name: FeatureExtraction
+What it does: identifies the important features of the data file (e.g. microparticle)
+Inputs: 
+Outputs:
 
-5. Remove noise
+6. Name: RemoveNoise
+What it does: removes unwanted features or noise from the image (e.g. imperfections of the filter paper background)
+Inputs: 
+Outputs:
 
-6. Dimensions extractor (size)
+7. Name: Segmentation
+What it does: understand the image by segmenting the image into a background and particle
+Inputs: resized and cropped image file from ResizeImage
+Outputs: segmentation map indicating background and particle portion on image
+
+8. Name: DimensionExtractor
+What it does: extracts or measures the maximum length of each particle segmentation
+Inputs: segmentation map from Segmentation function
+Outputs: size in pixels that is then converted into microns
 
 7. Shape classification (decision tree? k-means?)
 
