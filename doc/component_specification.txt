@@ -17,40 +17,40 @@ Outputs: higher contrast image
 
 4. Name: FeatureExtraction
 What it does: identifies the important features of the data file (e.g. microparticle)
-Inputs: 
-Outputs:
+Inputs: an individual image
+Outputs: output a numerical representation (matrix) representation of the image 
 
-6. Name: RemoveNoise
+5. Name: RemoveNoise
 What it does: removes unwanted features or noise from the image (e.g. imperfections of the filter paper background)
-Inputs: 
-Outputs:
+Inputs: a microscopy image 
+Outputs: a cleaned-up image that has spots/imperfections from the filter paper removed 
 
-7. Name: Segmentation
+6. Name: Segmentation
 What it does: understand the image by segmenting the image into a background and particle
 Inputs: resized and cropped image file from ResizeImage
 Outputs: segmentation map indicating background and particle portion on image
 
-8. Name: DimensionExtractor
+7. Name: DimensionExtractor
 What it does: extracts or measures the maximum length of each particle segmentation
 Inputs: segmentation map from Segmentation function (possibly labeled size for checking?)
 Outputs: dimension of size in pixels that is then converted into microns
 
-7. Name: ShapeClassifier (decision tree? k-means?) - May need to be machine learning
+8. Name: ShapeClassifier (decision tree? k-means?) - May need to be machine learning
 What it does: classifies the shape of the particle based on segmentation map
 Inputs: labels of shape, segmentation map from Segmentation function
 Outputs: classified shape as fiber, spherical, fragment, or irregular
 
-8. Name: TrainShapeClassifier (supervised learning?) 
+9. Name: TrainShapeClassifier (supervised learning?) 
 What it does: trains the ShapeClassification function
 Inputs: accuracy of predicted labels from shape classifier
-Outputs: 
+Outputs: a trained model 
 
-9. Name: ColorExtractor
+10. Name: ColorExtractor
 What it does: extracts the color feature of each particle
 Inputs: resized and cropped image file
 Outputs: color of the particle (in RGB coordinates?)
 
-10. Name: MicroplasticClassification
+11. Name: MicroplasticClassification
 What it does: classifies the particle as micro plastic or non-mircroplastic
 Inputs: dimension of size from DimensionExtractor, shape from ShapeClassifer, color from Color Extractor
 Outputs: label of microplastic or non-microplastic
