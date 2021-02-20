@@ -17,13 +17,13 @@ Outputs: higher contrast image
 
 4. Name: FeatureExtraction
 What it does: identifies the important features of the data file (e.g. microparticle)
-Inputs: 
-Outputs:
+Inputs: an individual image
+Outputs: output a numerical representation (matrix) representation of the image 
 
 6. Name: RemoveNoise
 What it does: removes unwanted features or noise from the image (e.g. imperfections of the filter paper background)
-Inputs: 
-Outputs:
+Inputs: a microscopy image 
+Outputs: a cleaned-up image that has spots/imperfections from the filter paper removed 
 
 7. Name: Segmentation
 What it does: understand the image by segmenting the image into a background and particle
@@ -43,7 +43,7 @@ Outputs: classified shape as fiber, spherical, fragment, or irregular
 8. Name: TrainShapeClassifier (supervised learning?) 
 What it does: trains the ShapeClassification function
 Inputs: accuracy of predicted labels from shape classifier
-Outputs: 
+Outputs: a trained model 
 
 9. Name: ColorExtractor
 What it does: extracts the color feature of each particle
