@@ -1,7 +1,0 @@
-Command Line Interpration:
-
-1. Name: parseArgs
-   What is does: Break down user command line arguements
-   Inputs: String
-   Outputs: List of strings
-

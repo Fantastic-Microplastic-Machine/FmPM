@@ -1,56 +1,114 @@
 Component specification
 
-1. Name: LoadImage
+Input:
+----------------
+Name: ParseArgs
+What is does: Break down user command line arguements
+Inputs: String
+Outputs: List of strings
+
+
+
+
+
+
+Pre-processing:
+----------------
+Name: LoadImage
 What it does: loads the .bmp image into the working notebook
 Inputs: .bmp microparticle image file 
 Outputs: image representation of the .bmp file
 
-2. Name: ResizeImage
+Name: ResizeImage
 What it does: resizes and crops any unnecessary borders of the .bmp file
 Inputs: .bmp file from LoadImage 
 Outputs: resized and cropped image file
 
-3. HistogramEqualizer
+Name: HistogramEqualizer
 What it does: improve contrast of the image files
 Inputs: resized and cropped image files from ResizeImage
-Outputs: higher contrast image 
+Outputs: higher contrast image
 
-4. Name: FeatureExtraction
-What it does: identifies the important features of the data file (e.g. microparticle)
-Inputs: an individual image
-Outputs: output a numerical representation (matrix) representation of the image 
-
-5. Name: RemoveNoise
+Name: RemoveNoise
 What it does: removes unwanted features or noise from the image (e.g. imperfections of the filter paper background)
 Inputs: a microscopy image 
 Outputs: a cleaned-up image that has spots/imperfections from the filter paper removed 
 
-6. Name: Segmentation
+
+
+
+
+Feature Extraction:
+-------------------
+Name: FeatureExtraction (Likely needed to be broken down further)
+What it does: identifies the important features of the data file (e.g. microparticle)
+Inputs: an individual image
+Outputs: output a numerical representation (matrix) representation of the image 
+
+Name: Segmentation
 What it does: understand the image by segmenting the image into a background and particle
 Inputs: resized and cropped image file from ResizeImage
 Outputs: segmentation map indicating background and particle portion on image
 
-7. Name: DimensionExtractor
+Name: DimensionExtractor
 What it does: extracts or measures the maximum length of each particle segmentation
 Inputs: segmentation map from Segmentation function (possibly labeled size for checking?)
 Outputs: dimension of size in pixels that is then converted into microns
 
-8. Name: ShapeClassifier (decision tree? k-means?) - May need to be machine learning
-What it does: classifies the shape of the particle based on segmentation map
-Inputs: labels of shape, segmentation map from Segmentation function
-Outputs: classified shape as fiber, spherical, fragment, or irregular
 
-9. Name: TrainShapeClassifier (supervised learning?) 
+
+
+
+Training:
+-------------------
+Name: SaveModel
+What it does: saves a model
+Inputs: filename to save model as
+Outputs: filepath and notification of successful save
+
+
+Name: TrainShapeClassifier (supervised learning?) 
 What it does: trains the ShapeClassification function
 Inputs: accuracy of predicted labels from shape classifier
 Outputs: a trained model 
 
-10. Name: ColorExtractor
-What it does: extracts the color feature of each particle
-Inputs: resized and cropped image file
-Outputs: color of the particle (in RGB coordinates?)
 
-11. Name: MicroplasticClassification
+Name: TrainColorClassifier
+What it does: trains the ColorClassification function
+Inputs: accuracy of predicted labels from color classifier
+Outputs: a trained model 
+
+Name: MicroparticleClassifier
+What it does: trains the MicroparticleClassification function
+Inputs: accuracy of predicted labels from color classifier
+Outputs: a trained model 
+
+
+Classifying:
+-------------------
+Name: ShapeClassifier (decision tree? k-means?) - May need to be machine learning
+What it does: classifies the shape of the particle based on segmentation map
+Inputs: labels of shape, segmentation map from Segmentation function
+Outputs: classified shape as fiber, spherical, fragment, or irregular
+
+
+Name: ColorClassifier
+What it does: extracts the color of each particle
+Inputs: resized and cropped image file
+Outputs: color of the particle (RGB coordinates and color category)
+
+
+Name: MicroplasticClassification
 What it does: classifies the particle as micro plastic or non-mircroplastic
 Inputs: dimension of size from DimensionExtractor, shape from ShapeClassifer, color from Color Extractor
 Outputs: label of microplastic or non-microplastic
+
+
+
+
+
+
+
+
+
+
