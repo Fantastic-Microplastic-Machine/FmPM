@@ -32,13 +32,25 @@ Outputs: segmentation map indicating background and particle portion on image
 
 8. Name: DimensionExtractor
 What it does: extracts or measures the maximum length of each particle segmentation
-Inputs: segmentation map from Segmentation function
-Outputs: size in pixels that is then converted into microns
+Inputs: segmentation map from Segmentation function (possibly labeled size for checking?)
+Outputs: dimension of size in pixels that is then converted into microns
 
-7. Shape classification (decision tree? k-means?)
+7. Name: ShapeClassifier (decision tree? k-means?) - May need to be machine learning
+What it does: classifies the shape of the particle based on segmentation map
+Inputs: labels of shape, segmentation map from Segmentation function
+Outputs: classified shape as fiber, spherical, fragment, or irregular
 
-8. Color extractor
+8. Name: TrainShapeClassifier (supervised learning?) 
+What it does: trains the ShapeClassification function
+Inputs: accuracy of predicted labels from shape classifier
+Outputs: 
 
-9. Train
+9. Name: ColorExtractor
+What it does: extracts the color feature of each particle
+Inputs: resized and cropped image file
+Outputs: color of the particle (in RGB coordinates?)
 
-10. Machine learning
+10. Name: MicroplasticClassification
+What it does: classifies the particle as micro plastic or non-mircroplastic
+Inputs: dimension of size from DimensionExtractor, shape from ShapeClassifer, color from Color Extractor
+Outputs: label of microplastic or non-microplastic
