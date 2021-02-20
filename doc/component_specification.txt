@@ -21,6 +21,11 @@ What it does: loads the .bmp image into the working notebook
 Inputs: .bmp microparticle image file 
 Outputs: image representation of the .bmp file
 
+Name: SaveImage
+What it does: saves a image in file system for late use as needed
+Inputs: filename, image to save
+Outputs: Bool, True for succesful save, False for unsuccesful save
+
 Name: ResizeImage
 What it does: resizes and crops any unnecessary borders of the .bmp file
 Inputs: .bmp file from LoadImage 
