@@ -1,0 +1,9 @@
+Rules for good coding practices for FmPM
+1. Each have our own notebook/folder to work in
+2. Main/master is always working and error free
+3. Branches is where we'll work
+4. We should all have our own branches
+5. Merge to main when we're together meeting/resolved stuff together
+-- Merge one branch at a time(?)
+6. Create a folder for all our functions, utilities, files for utilities
+-- Set the structure beforehand 
