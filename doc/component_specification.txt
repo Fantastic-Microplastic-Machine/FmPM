@@ -7,8 +7,10 @@ What is does: Break down user command line arguements
 Inputs: String
 Outputs: List of strings
 
-
-
+Name: CheckImage
+What it does: Checks the user is using appropriate file formats
+Inputs: filepath to image
+Outputs: Boolean. True for correct file type and false for incorrect.
 
 
 
@@ -70,18 +72,18 @@ Outputs: filepath and notification of successful save
 Name: TrainShapeClassifier (supervised learning?) 
 What it does: trains the ShapeClassification function
 Inputs: accuracy of predicted labels from shape classifier
-Outputs: a trained model 
+Outputs: a trained model and train statistics
 
 
 Name: TrainColorClassifier
 What it does: trains the ColorClassification function
 Inputs: accuracy of predicted labels from color classifier
-Outputs: a trained model 
+Outputs: a trained model and train statistics
 
 Name: MicroparticleClassifier
 What it does: trains the MicroparticleClassification function
 Inputs: accuracy of predicted labels from color classifier
-Outputs: a trained model 
+Outputs: a trained model and train statistics
 
 
 Classifying:
