@@ -49,11 +49,15 @@ class default(torch.nn.Module):
         return x
 
 default_model = default()
+default_optimizer = torch.optim.Adam(default_model.parameters(), lr=.002)
+
 
 
 def calculate_accuracy(y_pred, y):
     acc = ((y_pred.argmax(dim=1) == y).float().mean())
     return acc
+
+
 
 
 def train_iteration(model, iterator, optimizer, criterion, device):
@@ -120,10 +124,6 @@ class default(torch.nn.Module):
         return x
 
     
-
-default_model = default()
-default_optimizer = torch.optim.Adam(default_model.parameters(), lr=.002)
-
 def train(epochs, batch_size, dataset, criterion,
           optimizer=default_optimizer,
           model=default_model,
@@ -145,3 +145,37 @@ def train(epochs, batch_size, dataset, criterion,
         if epoch % 5 is 0:
             print(y_pred)
             print(target)
+    
+    return model
+
+
+
+def get_predictions(batch_size, model, dataset, device=torch.device('cpu')):
+
+    model.eval()
+    images = []
+    labels = []
+    weights = []
+    predictions = []
+    
+    iterator = torch.utils.data.DataLoader(dataset, 
+                                 shuffle = False, 
+                                 batch_size = batch_size)
+
+    with torch.no_grad():
+        for sample in iterator:
+            image = sample['image'].to(device)
+            isPlasticRaw = sample['plastic'].to(device)
+            y_pred = model(image)
+            
+            images.append(image)
+            labels.append(isPlasticRaw)
+            weights.append(y_pred)
+            predictions.append(y_pred.argmax(dim=1))
+
+    images = torch.cat(images, dim=0)
+    labels = torch.cat(labels, dim=0)
+    weights = torch.cat(weights, dim=0)
+    predictions = torch.cat(predictions, dim=0)
+    acc = (labels[:,1] == predictions).float().sum()/len(predictions)
+    return images, labels, predictions, weights, acc
