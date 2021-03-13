@@ -4,24 +4,16 @@ import time
 import os
 import re
 
-import torch
-import torch.nn as nn
-import torch.nn.functional 
-import torch.optim 
-import torch.utils.data
-
-import torchvision.transforms
-import torchvision.datasets
-
-
-import skimage.io
-import skimage.transform
-import sklearn.preprocessing
-
-import matplotlib.pyplot as plt
 import math
 import numpy as np
 import pandas as pd
+import skimage.io
+import skimage.transform
+import sklearn.preprocessing
+import torch
+import torchvision.transforms
+import torchvision.datasets
+
 
 def set_seeds(seed):
     """sets seeds for several used packages for reproducibility"""
@@ -122,7 +114,7 @@ class tenX_dataset(torch.utils.data.Dataset):
     Class inherited from torch Dataset. Required methods are, init,
     len, and getitem.
     """
-    def __init__(self, labels_frame, image_dir, transform):
+    def __init__(self, labels_frame, image_dir, transform = None):
         """
         initializes an instance of the class. Here we store 4 variables
         in the class. Calling init just looks like dataset = tenX_dataset(lables, 'image_folder', transform).
@@ -165,3 +157,17 @@ class tenX_dataset(torch.utils.data.Dataset):
                   'plastic': self.labels['isPlastic'][idx]}
   
         return sample
+
+
+
+
+def normalize_image(im):
+    #I forgot, does 
+    count = 0
+    for channel in im:
+        mean = torch.mean(channel).item()
+        std = torch.std(channel).item()
+        im[count] = (channel - mean) / std
+        count += 1
+    
+    return im
