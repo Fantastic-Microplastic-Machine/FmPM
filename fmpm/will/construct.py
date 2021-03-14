@@ -28,6 +28,9 @@ class default(torch.nn.Module):
         
         self.fc_1 = torch.nn.Linear(39 * 39 * 12, 256)
         self.fc_2 = torch.nn.Linear(256, 2)
+        self.drop = torch.nn.Dropout(p=.2)
+        self.batch1 = torch.nn.BatchNorm2d(6, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        self.batch2 = torch.nn.BatchNorm2d(12, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
             
     def forward(self, x):
         """
@@ -36,16 +39,18 @@ class default(torch.nn.Module):
         """
         
         x = self.conv1(x)
+        x = self.batch1(x)
         x = torch.nn.functional.max_pool2d(x, kernel_size = 2)
         x = torch.nn.functional.leaky_relu(x)
         x = self.conv2(x)
+        x = self.batch2(x)
         x = torch.nn.functional.max_pool2d(x, kernel_size = 4)
         x = torch.nn.functional.leaky_relu(x)
         x = x.view(x.shape[0], -1)  
         x = self.fc_1(x) 
         x = torch.nn.functional.leaky_relu(x)
-        x = self.fc_2(x)    
-        
+        x = self.drop(x)
+        x = self.fc_2(x) 
         return x
 
 default_model = default()
@@ -56,8 +61,6 @@ default_optimizer = torch.optim.Adam(default_model.parameters(), lr=.0015)
 def calculate_accuracy(y_pred, y):
     acc = ((y_pred.argmax(dim=1) == y).float().mean())
     return acc
-
-
 
 
 def train_iteration(model, iterator, optimizer, criterion, device):
@@ -82,7 +85,6 @@ def train_iteration(model, iterator, optimizer, criterion, device):
         epoch_acc += acc.item()
         
     return epoch_loss / len(iterator) , epoch_acc / len(iterator), y_pred, isPlasticRaw
-
 
 
 class default(torch.nn.Module):
