@@ -66,7 +66,7 @@ def test_encode_column_1():
     """
     Test if the encode_column function can generate correct output.
     """
-    labels = pd.read_csv('data/10x_labels_4.csv')  # Import the csv file containing labels.
+    labels = pd.read_csv('test_data/10x_labels_4.csv')  # Import the csv file containing labels.
     # Create two new columns, color and shape.
     new = labels["Description"].str.split(" ", n=1, expand=True)
     input_column_color = new[0].values
@@ -127,7 +127,7 @@ def test_encode_column_2():
         test1 = True
     assert test1 == True, "Test failed! The encode_column function is not responsive to the wrong input datatype 'int'."
     
-    labels = pd.read_csv('data/10x_labels_4.csv')
+    labels = pd.read_csv('test_data/10x_labels_4.csv')
     new = labels["Description"].str.split(" ", n=1, expand=True)
     input_2 = new[0].values
     test2 = False
@@ -205,7 +205,7 @@ def test_add_filenames_1():
     Test if the add_filenames function can generate correct output.
     """
     # Load the input data frame for the add_filenames function. 
-    input_df = pd.read_csv('data/10x_labels_5.csv')
+    input_df = pd.read_csv('test_data/10x_labels_5.csv')
     image_root = 'data/images_10x'
     # Prepare the input data frame
     sample_names = input_df["Sample"].str.split(" ", n=1, expand=False)
@@ -213,7 +213,7 @@ def test_add_filenames_1():
     # Call the add_filenames function and get the actual output data frame.
     result = add_filenames(input_df, image_root)
     # Load the output data frame. 
-    output_df = pd.read_csv('data/10x_labels_5_output.csv')
+    output_df = pd.read_csv('test_data/10x_labels_5_output.csv')
     # Modifiy the output data frame to make it expected output. 
     for i, rowi in output_df['Sample'].iteritems():
         output_df['Sample'].loc[i] = rowi.split(',')
@@ -226,7 +226,7 @@ def test_add_filenames_2():
     """
     Test if the add_filenames function is responsive to a wrong datatype of the input.
     """
-    input_labels = pd.read_csv('data/10x_labels_5.csv')
+    input_labels = pd.read_csv('test_data/10x_labels_5.csv')
     image_root = 'data/images_10x'
     test1 = False
     try: 
@@ -337,12 +337,12 @@ def test_prep_data_1():
     Test if the prep_data function can generate correct output.
     """
     # Load the csv file as the input data frame.
-    input_df = pd.read_csv('data/10x_labels_5.csv')
+    input_df = pd.read_csv('test_data/10x_labels_5.csv')
     image_dir = 'data/images_10x'
     # Call the prep_data function and get the actual output "result".
     result = prep_data(input_df, image_dir)
     # Load the output data frame from a csv file.
-    output_df = pd.read_csv('data/prep_data_output.csv')
+    output_df = pd.read_csv('test_data/prep_data_output.csv')
     # Modify the format of the output data frame to make it the expected output.
     for i, rowi in output_df['Sample'].iteritems():
         output_df['Sample'].loc[i] = rowi.split(',')
@@ -473,7 +473,7 @@ def test_tenX_dataset():
     """
     # Load the inputs for tenX_dataset.
     image_dir = 'data/images_10x'
-    labels = prep_data(pd.read_csv('data/10x_labels_5.csv'), image_dir)
+    labels = prep_data(pd.read_csv('test_data/10x_labels_5.csv'), image_dir)
     # To make the test more simple, define the "transform" as a function that returns 
     # the input directly without doing anything. 
     def transforms(image):
