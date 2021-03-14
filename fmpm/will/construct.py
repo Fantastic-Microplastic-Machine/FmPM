@@ -49,7 +49,7 @@ class default(torch.nn.Module):
         return x
 
 default_model = default()
-default_optimizer = torch.optim.Adam(default_model.parameters(), lr=.002)
+default_optimizer = torch.optim.Adam(default_model.parameters(), lr=.0015)
 
 
 
