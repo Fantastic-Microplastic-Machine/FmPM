@@ -124,8 +124,7 @@ class default(torch.nn.Module):
         return x
 
     
-def train(epochs, batch_size, dataset, criterion,
-          optimizer=default_optimizer,
+def train(epochs, batch_size, dataset, criterion, optimizer,
           model=default_model,
           device=torch.device('cpu')):
     
