@@ -71,7 +71,8 @@ def split_description(labels):
     
     
 def convert_plastics(labels):
-    PLASTICS = ['polystyrene', 'polyethylene','polypropylene','Nylon','ink + plastic','PET','carbon fiber']
+    PLASTICS = ['polystyrene', 'polyethylene','polypropylene','Nylon','ink + plastic','PET','carbon fiber',
+               'polyamide resin', 'plastic', 'polypropylene', 'PVC']
     identification = labels['Identification']
     
     for i in range(0,len(identification)):
@@ -100,7 +101,7 @@ def prep_data(labels, image_root):
     labels['Color'] = encode_column(labels[['Color']])
     labels['isPlastic'] = encode_column(labels[['isPlastic']])
     labels = add_filenames(labels, image_root)
-    labels = labels.dropna()
+    labels = labels.dropna().reset_index()
     
     return labels
 

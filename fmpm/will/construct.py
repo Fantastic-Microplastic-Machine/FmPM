@@ -8,6 +8,7 @@ import skimage.io
 import math
 import random
 import torchvision.transforms
+import sklearn.model_selection
 
 
 class default(torch.nn.Module):
@@ -54,8 +55,6 @@ class default(torch.nn.Module):
         return x
 
 default_model = default()
-default_optimizer = torch.optim.Adam(default_model.parameters(), lr=.0015)
-
 
 
 def calculate_accuracy(y_pred, y):
@@ -145,3 +144,32 @@ def get_predictions(batch_size, model, dataset, device=torch.device('cpu')):
     predictions = torch.cat(predictions, dim=0)
     acc = (labels[:,1] == predictions).float().sum()/len(predictions)
     return images, labels, predictions, weights, acc
+
+
+
+def k_fold(n_splits, epochs, batch_size, tranforms, criterion, model, optimizer, dataframe, device):
+    kf = KFold(n_splits=n_splits, shuffle = True)
+    models = []
+    losses = []
+    train_accs = []
+    test_accs = []
+    naive_accs = []
+    
+    for train_idx, test_idx in kf.split(dataframe):
+        curr_model = copy.deepcopy(model)
+        train = dataframe.iloc[train_idx].reset_index()
+        test = dataframe.iloc[test_idx].reset_index()
+        train_data = prep.tenX_dataset(train, 'data/raman_images', transform=transforms)
+        test_data = prep.tenX_dataset(test, 'data/raman_images', transform=transforms)
+        cnn, train_loss, train_acc = construct.train(epochs, batch_size, 
+                                                     train_data, criterion, optimizer, curr_model, device)
+        models.append(cnn)
+        train_accs.append(train_acc)
+        losses.append(train_loss)
+        images, labels, predictions, weights, test_acc = construct.get_predictions(BATCH_SIZE, cnn, test_data)
+        test_accs.append(test_acc)
+        naive_accs.append((labels[:,1] == 0).float().sum()/len(predictions))
+
+    return models, losses, train_accs, naive_accs, test_accs
+
+
