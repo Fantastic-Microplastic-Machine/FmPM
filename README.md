@@ -12,7 +12,7 @@ conda activate fmpm
 ```
 
 # Project authors
-Will Ballengee - 
+Will Ballengee - Chemical engineering
 Nida Janulaitis - Chemical engineering 
 Samantha Phan - Chemistry
 Liwen Xing - Chemistry
