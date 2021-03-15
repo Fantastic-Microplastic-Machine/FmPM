@@ -109,7 +109,7 @@ def prep_data(labels, image_root):
     labels['Color'] = encode_column(labels[['Color']])
     labels['isPlastic'] = encode_column(labels[['isPlastic']])
     labels = add_filenames(labels, image_root)
-    labels = labels.dropna()
+    labels = labels.dropna().reset_index()
     
     return labels
 
