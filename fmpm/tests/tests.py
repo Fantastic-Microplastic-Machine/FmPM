@@ -192,7 +192,7 @@ def add_filenames(labels, image_root):
             result = re.search(str_id, fname)
             if result:
                 image_file = result.group()
-                assert(os.path.exists('./data/images_10x/' + image_file))
+                assert(os.path.exists('./test_data/images_10x/' + image_file))
                 break
         else:
             image_file = None
