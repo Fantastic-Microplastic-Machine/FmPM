@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/Fantastic-Microplastic-Machine/FmPM.svg?branch=main)](https://travis-ci.com/github/Fantastic-Microplastic-Machine/FmPM)
+[![Coverage Status](https://coveralls.io/repos/github/Fantastic-Microplastic-Machine/FmPM/badge.svg?branch=main)](https://coveralls.io/github/Fantastic-Microplastic-Machine/FmPM?branch=main)
 
 # FmPM - Fantastic μPlastic Machine
 FmPM is a Data Science Project that was developed by a group of graduate students from the University of Washington in Seattle.
@@ -19,6 +20,8 @@ conda env create -f environment.yml
 ```
 conda activate fmpm
 ```
+
+## Licenses 
 
 
 ## Authors
