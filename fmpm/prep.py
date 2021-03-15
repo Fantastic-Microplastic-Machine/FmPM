@@ -46,6 +46,7 @@ def add_filenames(labels, image_root):
     """
     Replaces sample column of labels with the actual filename so that the dataset class doesn't have to do that work.
     """
+    labels = split_sample(labels)
     image_filenames = os.listdir(image_root)
     labels.insert(loc=1, column='File', value=None)
     for index, row in labels.iterrows():
@@ -65,23 +66,21 @@ def add_filenames(labels, image_root):
 
 
 
-def prep_data(labels, image_root):
-    """
-    Takes in raw labels dataframe and converts it into the format
-    expected for tenX_dataset class
-    """
+def split_sample(labels):
+    sample_names = labels["Sample"].str.split(" ", n=1, expand=False)
+    labels['Sample'] = sample_names
+    return labels
+    
 
-    #Splitting description column into color and shape columns
+def split_description(labels):
     new = labels["Description"].str.split(" ", n=1, expand=True)
     labels.drop(columns=['Description'], inplace=True)
     labels['Color'] = new[0].values
     labels['Shape'] = new[1].values
+    return labels
     
-    #Decomposing sample keywords into seperate strings
-    sample_names = labels["Sample"].str.split(" ", n=1, expand=False)
-    labels['Sample'] = sample_names
     
-    #Converting identification into boolean for is/is not plastic
+def convert_plastics(labels):
     PLASTICS = ['polystyrene', 'polyethylene','polypropylene','Nylon','ink + plastic','PET','carbon fiber']
     identification = labels['Identification']
     
@@ -94,19 +93,25 @@ def prep_data(labels, image_root):
     labels['Identification'] = identification
     labels.rename(columns={'Identification': 'isPlastic'}, inplace=True)
     labels['isPlastic'] = labels["isPlastic"].astype(int)
-    
+    return labels
+
+
+def prep_data(labels, image_root):
+    """
+    Takes in raw labels dataframe and converts it into the format
+    expected for tenX_dataset class
+    """
+    labels = split_description(labels)
+    labels = convert_plastics(labels)
     
     #Encoding shape and color data
     labels['Shape'] = encode_column(labels[['Shape']])
     labels['Color'] = encode_column(labels[['Color']])
     labels['isPlastic'] = encode_column(labels[['isPlastic']])
     labels = add_filenames(labels, image_root)
-    labels = remove_nones(labels)
+    labels = labels.dropna().reset_index()
     
     return labels
-
-
-
 
 
 class tenX_dataset(torch.utils.data.Dataset):
