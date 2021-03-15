@@ -113,6 +113,7 @@ def add_filenames(labels, image_root):
         the name of the corresponding file if it exists. If no matching file
         is found, the value for that row is None. 
     """
+    labels = split_sample(labels)
     image_filenames = os.listdir(image_root)
     labels.insert(loc=1, column='File', value=None)
     for index, row in labels.iterrows():
@@ -227,7 +228,6 @@ def prep_data(labels, image_root):
         been added. 
     """
     labels = split_description(labels)
-    labels = split_sample(labels)
     labels = convert_plastics(labels)
     
     #Encoding shape and color data
