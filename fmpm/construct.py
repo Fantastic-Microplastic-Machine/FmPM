@@ -87,44 +87,6 @@ def train_iteration(model, iterator, optimizer, criterion, device):
     return epoch_loss / len(iterator) , epoch_acc / len(iterator), y_pred, isPlasticRaw
 
 
-class default(torch.nn.Module):
-    def __init__(self):
-        """
-        Initializes CNN. Here we just define layer shapes that we call in the forward func
-        """
-        super().__init__()
-
-        self.conv1 = torch.nn.Conv2d(in_channels = 3, 
-                               out_channels = 6, 
-                               kernel_size = 5)
-                
-        #Convultion layer 2. See above
-        self.conv2 = torch.nn.Conv2d(in_channels = 6, 
-                               out_channels = 12, 
-                               kernel_size = 5)
-        
-        self.fc_1 = torch.nn.Linear(39 * 39 * 12, 256)
-        self.fc_2 = torch.nn.Linear(256, 2)
-            
-    def forward(self, x):
-        """
-        Function that performs all the neural network forward calculation i.e.
-        takes image data from the input of the neural network to the output
-        """
-        
-        x = self.conv1(x)
-        x = torch.nn.functional.max_pool2d(x, kernel_size = 2)
-        x = torch.nn.functional.leaky_relu(x)
-        x = self.conv2(x)
-        x = torch.nn.functional.max_pool2d(x, kernel_size = 4)
-        x = torch.nn.functional.leaky_relu(x)
-        x = x.view(x.shape[0], -1)  
-        x = self.fc_1(x) 
-        x = torch.nn.functional.leaky_relu(x)
-        x = self.fc_2(x)    
-        
-        return x
-
     
 def train(epochs, batch_size, dataset, criterion, optimizer,
           model=default_model,
