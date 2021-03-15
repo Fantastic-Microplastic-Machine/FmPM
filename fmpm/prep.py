@@ -46,6 +46,7 @@ def add_filenames(labels, image_root):
     """
     Replaces sample column of labels with the actual filename so that the dataset class doesn't have to do that work.
     """
+    labels = split_sample(labels)
     image_filenames = os.listdir(image_root)
     labels.insert(loc=1, column='File', value=None)
     for index, row in labels.iterrows():
@@ -101,7 +102,6 @@ def prep_data(labels, image_root):
     expected for tenX_dataset class
     """
     labels = split_description(labels)
-    labels = split_sample(labels)
     labels = convert_plastics(labels)
     
     #Encoding shape and color data
