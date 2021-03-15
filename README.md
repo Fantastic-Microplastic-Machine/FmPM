@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/Fantastic-Microplastic-Machine/FmPM.svg?branch=main)(https://travis-ci.com/github/Fantastic-Microplastic-Machine/FmPM)]
+[![Build Status](https://travis-ci.com/Fantastic-Microplastic-Machine/FmPM.svg?branch=main)](https://travis-ci.com/github/Fantastic-Microplastic-Machine/FmPM)
 
 # FmPM - Fantastic μPlastic Machine
 FmPM is a Data Science Project that was developed by a group of graduate students from the University of Washington in Seattle.
