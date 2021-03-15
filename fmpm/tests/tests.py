@@ -206,7 +206,7 @@ def test_add_filenames_1():
     """
     # Load the input data frame for the add_filenames function. 
     input_df = pd.read_csv('test_data/10x_labels_5.csv')
-    image_root = 'data/images_10x'
+    image_root = 'test_data/images_10x'
     # Prepare the input data frame
     sample_names = input_df["Sample"].str.split(" ", n=1, expand=False)
     input_df['Sample'] = sample_names
@@ -227,7 +227,7 @@ def test_add_filenames_2():
     Test if the add_filenames function is responsive to a wrong datatype of the input.
     """
     input_labels = pd.read_csv('test_data/10x_labels_5.csv')
-    image_root = 'data/images_10x'
+    image_root = 'test_data/images_10x'
     test1 = False
     try: 
         add_filenames(input_labels, image_root)
@@ -338,7 +338,7 @@ def test_prep_data_1():
     """
     # Load the csv file as the input data frame.
     input_df = pd.read_csv('test_data/10x_labels_5.csv')
-    image_dir = 'data/images_10x'
+    image_dir = 'test_data/images_10x'
     # Call the prep_data function and get the actual output "result".
     result = prep_data(input_df, image_dir)
     # Load the output data frame from a csv file.
@@ -359,7 +359,7 @@ def test_prep_data_2():
     """
     Test if the prep_data function is responsive to a wrong datatype of the input.
     """
-    image_dir = 'data/images_10x'
+    image_dir = 'test_data/images_10x'
     input_1 = 10
     test1 = False
     try:
@@ -472,7 +472,7 @@ def test_tenX_dataset():
      
     """
     # Load the inputs for tenX_dataset.
-    image_dir = 'data/images_10x'
+    image_dir = 'test_data/images_10x'
     labels = prep_data(pd.read_csv('test_data/10x_labels_5.csv'), image_dir)
     # To make the test more simple, define the "transform" as a function that returns 
     # the input directly without doing anything. 
