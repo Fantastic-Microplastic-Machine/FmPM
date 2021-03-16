@@ -34,7 +34,7 @@ Nida Janulaitis - Chemical engineering, PhD
 
 Samantha Phan - Chemistry, PhD
 
-Liwen Xing - Chemistry, PhD
+Liwen Xing - Molecular Engineering & Sciences, PhD
 
 
 ## License
