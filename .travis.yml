@@ -21,7 +21,6 @@ branches:
 # commands to prepare the conda install - download the latest conda
 # and install it and add to path
 before_install:
-    - apt-get install some_os_dependency
     - wget -O miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
     - chmod +x miniconda.sh
     - ./miniconda.sh -b
@@ -47,6 +46,3 @@ script:
 after_success:
     - coverage report
     - coveralls
-
-sudo: true
-
