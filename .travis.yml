@@ -10,9 +10,10 @@ matrix:
         - python: 3.7
 
 # what branches should be evaluated
-# if you are using a recently created repository, the below
-# may need to be main instead of master, i.e.
-#       - main
+# if you are updating an old repo or one created by the git command
+# line tools, you may need to use the line below (master instead of
+# main)
+#       - master
 branches:
     only:
         - sam
@@ -25,11 +26,12 @@ before_install:
     - ./miniconda.sh -b
     - export PATH=/home/travis/miniconda3/bin:$PATH
     - conda update --yes conda
-    - conda config --set restore_free_channel true        
+    - source $(conda info --root)/etc/profile.d/conda.sh
+        
 # list of commands to run to setup the environment
 install:
     - conda env create -q -n test-environment python=$TRAVIS_PYTHON_VERSION --file environment.yml
-    - source activate test-environment
+    - conda activate test-environment
     - conda install --yes coverage coveralls flake8
 
 # a list of commands to run before the main script
