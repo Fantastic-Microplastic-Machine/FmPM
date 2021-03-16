@@ -1,121 +1,76 @@
 Component specification
 
-Input:
+Prep:
 ----------------
-Name: ParseArgs
-What is does: Break down user command line arguements
-Inputs: String
-Outputs: List of strings
+Name: set_seeds
+What is does: Set various random states
+Inputs: an integer
+Outputs: none
 
-Name: CheckImage
-What it does: Checks the user is using appropriate file formats
-Inputs: filepath to image
-Outputs: Boolean. True for correct file type and false for incorrect.
+Name: encode_column
+What it does: One hot encodes a pandas dataframe column
+Inputs: Single column pandas dataframe
+Outputs: One hot encoded version of input column
+
+Name: add_filenames
+What it does: Searchs through an directory for files based on keywords in 'Sample' column and puts filenames into new column 'File'
+Inputs: Pandas dataframe with column named 'Sample'
+Outputs: Pandas dataframe
+
+Name: split_sample
+What it does: Splits 'Sample' column of dataframe into list of keywords
+Inputs: Pandas dataframe with column named 'Sample'
+Outputs: Pandas dataframe
+
+Name: convert_plastics
+What it does: Converts 'Identification' column into column of 0/1's 0 meaning not a plastic
+Inputs: Pandas dataframe with column named 'Identification'
+Outputs: Pandas dataframe
+
+Name: split_description
+What it does: Splits 'Description' column of dataframe into two columns, 'Color' and 'Shape' on first space
+Inputs: Pandas dataframe with column named 'Description'
+Outputs: Pandas dataframe
+
+Name: prep_data
+What it does: Calls all other functions in prep
+Inputs: Pandas dataframe
+Outputs: Pandas dataframe
+
+Name: tenX_dataset
+What it does: Pytorch dataset class. Allows use of pytorch dataloader.
+Inputs: Pandas dataframe, image directory name, and a pytorch transform composition
+Outputs: instance of tenX_dataset class
 
 
-
-Pre-processing:
+Construct:
 ----------------
-Name: LoadImage
-What it does: loads the .bmp image into the working notebook
-Inputs: .bmp microparticle image file 
-Outputs: image representation of the .bmp file
+Name: calculate_accuracy
+What it does: Calculates accuracy of binary classification
+Inputs: Two tensors
+Outputs: Integer
 
-Name: SaveImage
-What it does: saves a image in file system for late use as needed
-Inputs: filename, image to save
-Outputs: Bool, True for succesful save, False for unsuccesful save
+Name: train_iteration
+What it does: Runs one epoch of training
+Inputs: a model, a dataloader, a optimizer, a loss function, and a device
+Outputs: The epoch average accuracy and average loss
 
-Name: ResizeImage
-What it does: resizes and crops any unnecessary borders of the .bmp file
-Inputs: .bmp file from LoadImage 
-Outputs: resized and cropped image file
+Name: train
+What it does: Trains a model
+Inputs: number of epochs (int), batch size (int), dataset class instance, a loss function, a optimizer, a model, and a device
+Outputs: The trained model, the average loss and accuracy for each epoch (floats)
 
-Name: HistogramEqualizer
-What it does: improve contrast of the image files
-Inputs: resized and cropped image files from ResizeImage
-Outputs: higher contrast image
+Name: get_predictions
+What it does: Makes predictions using a trained model
+Inputs: batch size (int), a model, a dataset class instance, and a device
+Outputs: The images in the dataset (tensor), the labels in the dataset (tensor), predictions (tensor), output of model (tensor), and the accuracy (float).
 
-Name: RemoveNoise
-What it does: removes unwanted features or noise from the image (e.g. imperfections of the filter paper background)
-Inputs: a microscopy image 
-Outputs: a cleaned-up image that has spots/imperfections from the filter paper removed 
+Name: save_model
+What it does: Saves a model into the file system
+Inputs: a model, and a filepath (string)
+Outputs: None
 
-
-
-
-
-Feature Extraction:
--------------------
-Name: FeatureExtraction (Likely needed to be broken down further)
-What it does: identifies the important features of the data file (e.g. microparticle)
-Inputs: an individual image
-Outputs: output a numerical representation (matrix) representation of the image 
-
-Name: Segmentation
-What it does: understand the image by segmenting the image into a background and particle
-Inputs: resized and cropped image file from ResizeImage
-Outputs: segmentation map indicating background and particle portion on image
-
-Name: DimensionExtractor
-What it does: extracts or measures the maximum length of each particle segmentation
-Inputs: segmentation map from Segmentation function (possibly labeled size for checking?)
-Outputs: dimension of size in pixels that is then converted into microns
-
-
-
-
-
-Training:
--------------------
-Name: SaveModel
-What it does: saves a model
-Inputs: filename to save model as
-Outputs: filepath and notification of successful save
-
-
-Name: TrainShapeClassifier (supervised learning?) 
-What it does: trains the ShapeClassification function
-Inputs: accuracy of predicted labels from shape classifier
-Outputs: a trained model and train statistics
-
-
-Name: TrainColorClassifier
-What it does: trains the ColorClassification function
-Inputs: accuracy of predicted labels from color classifier
-Outputs: a trained model and train statistics
-
-Name: MicroparticleClassifier
-What it does: trains the MicroparticleClassification function
-Inputs: accuracy of predicted labels from color classifier
-Outputs: a trained model and train statistics
-
-
-Classifying:
--------------------
-Name: ShapeClassifier (decision tree? k-means?) - May need to be machine learning
-What it does: classifies the shape of the particle based on segmentation map
-Inputs: labels of shape, segmentation map from Segmentation function
-Outputs: classified shape as fiber, spherical, fragment, or irregular
-
-
-Name: ColorClassifier
-What it does: extracts the color of each particle
-Inputs: resized and cropped image file
-Outputs: color of the particle (RGB coordinates and color category)
-
-
-Name: MicroplasticClassification
-What it does: classifies the particle as micro plastic or non-mircroplastic
-Inputs: dimension of size from DimensionExtractor, shape from ShapeClassifer, color from Color Extractor
-Outputs: label of microplastic or non-microplastic
-
-
-
-
-
-
-
-
-
-
+Name: load_model
+What it does:
+Inputs: a filepath (string)
+Outputs: a model
