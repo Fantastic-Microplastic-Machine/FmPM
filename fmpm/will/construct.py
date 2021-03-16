@@ -90,7 +90,7 @@ def train(epochs, batch_size, dataset, criterion, optimizer,
           model=default_model,
           device=torch.device('cpu')):
     
-    optimizer = torch.optim.Adam(model.parameters(), lr=.002)
+    optimizer = torch.optim.Adam(model.parameters(), lr=.0015)
 
     
     train_iterator = torch.utils.data.DataLoader(dataset, 
@@ -110,8 +110,40 @@ def train(epochs, batch_size, dataset, criterion, optimizer,
         if epoch % 5 is 0:
             print(y_pred)
             print(target)
-    
+        
+        
     return model, loss, acc
+
+
+def train_test(epochs, batch_size, train_dataset, test_dataset, criterion, optimizer,
+          model=default_model,
+          device=torch.device('cpu')):
+    
+    optimizer = torch.optim.Adam(model.parameters(), lr=.0015)
+
+    
+    train_iterator = torch.utils.data.DataLoader(train_dataset, 
+                                 shuffle = True, 
+                                 batch_size = batch_size)
+    model.to(device)
+    criterion.to(device)
+    loss = []
+    acc = []
+    test_acc = []
+    
+    for epoch in range(epochs+1):
+        train_loss, train_acc, y_pred, target = (
+            train_iteration(model, train_iterator, optimizer, criterion, device))
+        print(f'EPOCH: {epoch}, acc: {train_acc}, loss: {train_loss}')
+        loss.append(train_loss)
+        acc.append(train_acc)
+        if epoch % 5 is 0:
+            print(y_pred)
+            print(target)
+        _, _, _, _, test = get_predictions(batch_size, model, test_dataset)
+        test_acc.append(test)
+        
+    return model, loss, acc, test_acc
 
 
 
