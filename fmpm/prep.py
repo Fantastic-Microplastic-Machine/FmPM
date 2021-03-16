@@ -193,7 +193,8 @@ def convert_plastics(labels):
         'PET',
         'carbon fiber',
         'polyamide resin',
-        'PVC']
+        'PVC',
+        'plastic']
     identification = labels['Identification']
 
     for i in range(0, len(identification)):

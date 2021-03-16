@@ -334,7 +334,6 @@ def k_fold(
         transforms,
         criterion,
         model,
-        optimizer,
         dataframe,
         device,
         image_root):
@@ -355,8 +354,6 @@ def k_fold(
         Defines the loss function for training the model.
     model: custom pytorch object
         Architecture of the CNN in a pytorch object.
-    optimizer: pytorch object
-        Optimizer for training the model.
     dataframe: DataFrame
         DataFrame containing the data set.
     device: pytorch device object
@@ -385,13 +382,14 @@ def k_fold(
     naive_accs = []
 
     for train_idx, test_idx in kf.split(dataframe):
+        optimizer = torch.optim.Adam(model.parameters(), lr=.001)
         curr_model = copy.deepcopy(model)
-        train = dataframe.iloc[train_idx].reset_index()
-        test = dataframe.iloc[test_idx].reset_index()
+        train_df = dataframe.iloc[train_idx].reset_index()
+        test_df = dataframe.iloc[test_idx].reset_index()
         train_data = prep.tenX_dataset(
-            train, image_root, transform=transforms)
+            train_df, image_root, transform=transforms)
         test_data = prep.tenX_dataset(
-            test, image_root, transform=transforms)
+            test_df, image_root, transform=transforms)
         cnn, train_loss, train_acc = train(
                 epochs, batch_size, train_data,
                 criterion, optimizer, curr_model, device)
