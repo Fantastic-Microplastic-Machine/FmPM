@@ -1,7 +1,9 @@
 import copy
+import construct
 import prep
 import torch
 from sklearn.model_selection import KFold
+
 
 def k_fold(
         n_splits,
@@ -66,14 +68,14 @@ def k_fold(
             train_df, image_root, transform=transforms)
         test_data = prep.tenX_dataset(
             test_df, image_root, transform=transforms)
-        cnn, train_loss, train_acc = train(
+        cnn, train_loss, train_acc = prep.train(
                 epochs, batch_size, train_data,
                 criterion, optimizer, curr_model, device)
         models.append(cnn)
         train_accs.append(train_acc)
         losses.append(train_loss)
-        images, labels, predictions, weights, test_acc = get_predictions(
-            batch_size, cnn, test_data)
+        images, labels, predictions, weights, test_acc =\
+            construct.get_predictions(batch_size, cnn, test_data)
         test_accs.append(test_acc)
         naive_accs.append((labels[:, 1] == 0).float().sum() / len(predictions))
 
