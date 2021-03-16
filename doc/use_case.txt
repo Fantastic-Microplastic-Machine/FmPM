@@ -1,15 +1,7 @@
 Use Case:
-
-1. Generating microplastic descriptor data
- - User: Wants the size, color, and shape of microparticle images
- - Input: Images containing single microparticles
- - Function: Run image data through data generating functions/models
- - Results: Return table of microplastic descriptor data with file names
- 
- 
-2. Classifying microparticles as microplastics
+1. Classifying microparticles as microplastics
  - User: Wants to determine if microparticle is microplastic or not
- - Input: Images containing single microparticles and specified model iteration by filepath
+ - Input: Images containing single microparticles and specified model instance
  - Function: Run image data through classfier model
  - Results: Return table of classification results with file names
  
@@ -19,41 +11,35 @@ Use Case:
  - Function: Run image data through classfier model
  - Results: Return table of classification results
  
- 
-3. Checking valid image data
- - User: Wants to feed image data to our software
- - Input: Images not of the appropriate file format
- - Function: Check images compatability with software
- - Results: If images provided are not compatable with the software, return an error. Else,run the specified operations on the images
- 
- 
-4. Command line interface
- - User: Wants information on command line arguements
- - Input: User presents invalid command line arguements or uses keyword 'help'
- - Function: Parse and interpret command line arguements
- - Result: Print out of command line keywords and formatting
- 
- 
-5. Build a model
+2. Build a model
  - User: Wants to construct model with different hyperparameters or *stretch* type of algorithim
- - Input: Hyperparameters and filename to save model under
+ - Input: Pytorch 
  - Function: Build and save a model
  - Result: Notice of success and filepath to model 
  
- 
-6. Train a model(s)
+3. Train a model
  - User: Wants to train a model on image data
- - Input: Labeled microparticle images files, filepath to model, train-test-validation ratios
- - Function: Train specified model type on provided data and save
- - Results: Model performance data and updated saved model file
+ - Input: Labeled microparticle images files, a model, a loss function, and a optimzer
+ - Function: Train specified model type on provided data
+ - Results: Model performance data and model with trained weights
 
-7. Save a model
+4. Save a model
  - User: Wants to save a model
  - Input: Filename to save as
- - Function: Use pytorch save functions to create zipfile
- - Results: Message indicating success and file path of saved model
+ - Function: Use pytorch save functions to save model
+ - Results: Model saved in file system
  
-
+5. Load a model
+ - User: Wants load a model
+ - Input: Filename to load from
+ - Function: Load model from file
+ - Results: Model pulled into memory
+ 
+6. Prepare data
+ - User: Wants to convert data into form expected by functions
+ - Input: CSV of labels
+ - Function: Converts CSV to dataframe with appropriate columns and data
+ - Results: Table of labels
  
 
 
