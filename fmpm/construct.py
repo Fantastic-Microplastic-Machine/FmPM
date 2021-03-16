@@ -5,8 +5,8 @@ Designed to be used for single-particle, 10X microscopy data.
 Depends on prep.py module for preparing data.
 Also includes functions for saving and loading models from files.
 """
-import copy
 import torch
+
 
 class default(torch.nn.Module):
     """
