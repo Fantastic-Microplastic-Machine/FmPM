@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.com/Fantastic-Microplastic-Machine/FmPM.svg?branch=main)](https://travis-ci.com/github/Fantastic-Microplastic-Machine/FmPM)
 [![Coverage Status](https://coveralls.io/repos/github/Fantastic-Microplastic-Machine/FmPM/badge.svg?branch=main)](https://coveralls.io/github/Fantastic-Microplastic-Machine/FmPM?branch=main)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 # FmPM - Fantastic μPlastic Machine
 **FmPM** is a Data Science Project that was developed by a group of graduate students from the University of Washington in Seattle.
@@ -38,6 +38,5 @@ Liwen Xing - Chemistry, PhD
 
 
 ## License
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This project is licensed under the MIT License - see the [LICENSE]('https://github.com/Fantastic-Microplastic-Machine/FmPM/blob/main/LICENSE') file for details.
+This project is licensed under the MIT License - see `LICENSE` for details.
