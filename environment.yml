@@ -1,22 +1,3 @@
 name: test-environment
-channels:
-  - conda-forge
-  - defaults
 dependencies:
-  - bzip2=1.0.8=hc929b4f_4
-  - ca-certificates=2020.12.5=h033912b_0
-  - certifi=2018.8.24=py35_1001
-  - libcxx=11.1.0=habf9029_0
-  - libffi=3.2.1=hb1e8313_1007
-  - ncurses=6.2=h2e338ed_4
-  - openssl=1.0.2u=h0b31af3_0
-  - pip=20.3.4=pyhd8ed1ab_0
-  - python=3.5.5=h5001a0f_2
-  - readline=7.0=hcfe32e1_1001
-  - setuptools=40.4.3=py35_0
-  - sqlite=3.28.0=h9721f7c_0
-  - tk=8.6.10=h0419947_1
-  - wheel=0.36.2=pyhd3deb0d_0
-  - xz=5.2.5=haf1e3a3_1
-  - zlib=1.2.11=h7795811_1010
-prefix: /opt/anaconda3/envs/test-environment
+  - pandas
