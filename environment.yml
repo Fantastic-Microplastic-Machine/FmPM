@@ -1,4 +1,4 @@
-name: test-environment
+name: fmpm
 channels:
   - pytorch
   - defaults
