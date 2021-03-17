@@ -6,7 +6,6 @@ channels:
 dependencies:
   - altair
   - matplotlib
-  - nose
   - numpy
   - pandas
   - pip
