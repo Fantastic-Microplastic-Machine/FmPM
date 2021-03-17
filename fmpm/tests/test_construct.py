@@ -138,11 +138,16 @@ def test_get_predictions():
     dataset = prep.tenX_dataset(data, image_dir, transforms)
     images, labels, predictions, weights, acc =\
         construct.get_predictions(1, model, dataset)
-    assert labels.size() == torch.Size([12, 2])
-    assert isinstance(acc.item(), float)
-    assert weights.size() == torch.Size([12, 2])
-    assert predictions.size() == torch.Size([12])
-    assert images.size() == torch.Size([12, 3, 325, 325])
+    assert labels.size() == torch.Size([12, 2]),\
+        f'{"get_predictions error, incorrect labels dimensions"}'
+    assert isinstance(acc.item(), float),\
+        f'{"get_predictions error, incorrect accuracy dtype"}'
+    assert weights.size() == torch.Size([12, 2]),\
+        f'{"get_predictions error, incorrect weight dimensions"}'
+    assert predictions.size() == torch.Size([12]),\
+        f'{"get_predictions error, incorrect predictions dimensions"}'
+    assert images.size() == torch.Size([12, 3, 325, 325]),\
+        f'{"get_predictions error, incorrect image"}'
 
 
 def test_train():
@@ -180,7 +185,6 @@ def test_train():
             x = torch.nn.functional.leaky_relu(x)
             return x
 
-    # model = test_model()
     image_dir = 'tests/test_data/images_10x'
     data = prep.prep_data(pd.read_csv('tests/test_data/10x_labels_4.csv'),
                           image_dir)

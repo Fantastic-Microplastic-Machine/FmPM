@@ -26,7 +26,23 @@ conda env create -f environment.yml
 ```
 conda activate fmpm
 ```
-Take a look at the [examples.ipynb](https://github.com/Fantastic-Microplastic-Machine/FmPM/blob/main/examples.ipynb) for more details.
+
+### Using the code
+1. Data Prep 
+- All images in a single directory
+- Pandas DataFrame with ‘isPlastic’ and ‘File’ columns (can use prep.py functions to help with this)
+
+2. Load data into custom pytorch class tenX_dataset (prep.py)
+
+3. Train the default model (construct.py- train();  specify dataset, epochs, and batch size)
+
+4. Get predictions (construct.py- get_predictions())
+
+Next Steps: Override defaults with custom options, k-fold cross validation (kfold.py), save/load models to file (construct.py)
+
+### Examples
+
+See [examples.ipynb](https://github.com/Fantastic-Microplastic-Machine/FmPM/blob/main/examples.ipynb) for more details on how to use the code.
 
 ## Authors
 Will Ballengee - Chemical engineering, MS
