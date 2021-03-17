@@ -4,16 +4,25 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - altair
+  - _pytorch_select=0.1
+  - altair=4.1.0
+  - blosc=1.21.0
+  - cloudpickle=1.6.0
+  - coverage=5.5
+  - defusedxml=0.6.0
+  - flake8=3.8.4
+  - jupyter
   - matplotlib
+  - mkl_random=1.1.1
+  - nose=1.3.7
   - numpy
+  - packaging=20.9
   - pandas
-  - pip
-  - python
-  - pytorch
-  - scikit-image
-  - scikit-learn
+  - pcre=8.44
+  - pycodestyle
+  - scikit-image=0.17.2
+  - scikit-learn=0.24.1
   - scipy
-  - seaborn
-  - torchvision
+  - torchvision=0.4.2
 prefix: /opt/anaconda3/envs/fmpm
+
