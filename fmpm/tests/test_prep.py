@@ -1,28 +1,15 @@
-import copy
 import random
-import time
-import os
-import re
 
 import torch
-import torch.nn as nn
 import torch.nn.functional
 import torch.optim
 import torch.utils.data
-
-import torchvision.transforms
-import torchvision.datasets
-
-import skimage.io
-import skimage.transform
-import sklearn.preprocessing
 
 import numpy as np
 import pandas as pd
 
 from fmpm import prep
 
-from PIL import Image, ImageEnhance
 pd.options.mode.chained_assignment = None
 
 
@@ -31,27 +18,27 @@ def test_set_seeds():
     Test if the set_seeds function works.
     """
     seed = 42
-    prep.set_seeds(seed)   #Call the set_seeds function.
+    prep.set_seeds(seed)  # Call the set_seeds function.
     # create random datasets using torch.randint,
     # random.randint, and np.random.randint.
     x = torch.randint(0, 10, (3, 3))
     y = random.randint(0, 100)
     z = np.random.randint(5, size=(2, 4))
-    prep.set_seeds(seed) # Set the same seeds again.
+    prep.set_seeds(seed)  # Set the same seeds again.
     # Check the random datasets are still the same.
     assert torch.equal(x, torch.randint(0, 10, (3, 3))),\
         "The set_seed function is broken!"
     assert y == random.randint(0, 100), "The set_seed function is broken!"
     assert np.array_equal(z, np.random.randint(5, size=(2, 4))),\
         "The set_seed function is broken!"
-    return
+    return None
 
 
 def test_encode_column_1():
     """
     Test if the encode_column function can generate correct output.
     """
-    labels = pd.read_csv('tests/test_data/10x_labels_4.csv') 
+    labels = pd.read_csv('tests/test_data/10x_labels_4.csv')
     # Import the csv file containing labels.
     # Create two new columns, color and shape.
     new = labels["Description"].str.split(" ", n=1, expand=True)
@@ -99,7 +86,8 @@ def test_encode_column_1():
         "The function encode_column is broken!"
     assert np.array_equal(expect_output_shape, output_shape),\
         "The function encode_column is broken!"
-    return
+    return None
+
 
 def test_encode_column_2():
     """
@@ -113,7 +101,7 @@ def test_encode_column_2():
     except Exception as e:
         assert isinstance(e, ValueError), "Wrong type of error."
         test1 = True
-    assert test1 == True, "Test failed!\
+    assert test1, "Test failed!\
         The encode_column function is not responsive\
         to the wrong input datatype 'int'."
 
@@ -126,8 +114,8 @@ def test_encode_column_2():
     except Exception as e:
         assert isinstance(e, ValueError), "Wrong type of error."
         test2 = True
-    assert test2 == True, "Test failed!\
-        The encode_column function is not responsive
+    assert test2, "Test failed!\
+        The encode_column function is not responsive\
         to the wrong input datatype '1D array'."
 
     input_3 = [1, 2, 3]
@@ -137,7 +125,7 @@ def test_encode_column_2():
     except Exception as e:
         assert isinstance(e, ValueError), "Wrong type of error."
         test3 = True
-    assert test3 == True, "Test failed!\
+    assert test3, "Test failed!\
         The encode_column function is not\
         responsive to the wrong input datatype 'list'."
 
@@ -148,7 +136,7 @@ def test_encode_column_2():
     except Exception as e:
         assert isinstance(e, ValueError), "Wrong type of error."
         test4 = True
-    assert test4 == True, "Test failed!\
+    assert test4, "Test failed!\
         The encode_column function is not\
         responsive to the wrong input datatype 'str'."
 
@@ -159,7 +147,7 @@ def test_encode_column_2():
     except Exception as e:
         assert isinstance(e, ValueError), "Wrong type of error."
         test5 = True
-    assert test5 == True, "Test failed!\
+    assert test5, "Test failed!\
         The encode_column function is not\
         responsive to the wrong input datatype 'bool'."
 
@@ -170,10 +158,10 @@ def test_encode_column_2():
     except Exception as e:
         assert isinstance(e, ValueError), "Wrong type of error."
         test6 = True
-    assert test6 == True, "Test failed!\
+    assert test6, "Test failed!\
         The encode_column function is not responsive\
         to the wrong input datatype 'float'."
-    return
+    return None
 
 
 def test_add_filenames_1():
@@ -183,20 +171,18 @@ def test_add_filenames_1():
     # Load the input data frame for the add_filenames function.
     input_df = pd.read_csv('tests/test_data/10x_labels_5.csv')
     image_root = 'tests/test_data/images_10x'
-    # Prepare the input data frame
-    sample_names = input_df["Sample"].str.split(" ", n=1, expand=False)
-    input_df['Sample'] = sample_names
+
     # Call the add_filenames function and get the actual output data frame.
     result = prep.add_filenames(input_df, image_root)
     # Load the output data frame.
-    output_df = pd.read_csv('test_data/10x_labels_5_output.csv')
+    output_df = pd.read_csv('tests/test_data/10x_labels_5_output.csv')
     # Modifiy the output data frame to make it expected output.
     for i, rowi in output_df['Sample'].iteritems():
         output_df['Sample'].loc[i] = rowi.split(',')
     # Check if the expected output data frame
     # is the same as the actual output data frame.
     assert output_df.equals(result), "The add_filenames function is broken!"
-    return
+    return None
 
 
 def test_add_filenames_2():
@@ -204,18 +190,7 @@ def test_add_filenames_2():
     Test if the add_filenames function is
     responsive to a wrong datatype of the input.
     """
-    input_labels = pd.read_csv('tests/test_data/10x_labels_5.csv')
     image_root = 'tests/test_data/images_10x'
-    test1 = False
-    try:
-        prep.add_filenames(input_labels, image_root)
-    except Exception as e:
-        assert isinstance(e, TypeError), 'Wrong type of error'
-        test1 = True
-    assert test1 == True, "Test failed!\
-        The add_filenames function is not responsive to\
-        TypeError of each item in the 'Sample' column"
-
     input_1 = 10
     test2 = False
     try:
@@ -223,7 +198,7 @@ def test_add_filenames_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test2 = True
-    assert test2 == True, "Test failed!\
+    assert test2, "Test failed!\
         The add_filenames function is not\
         responsive to the wrong input datatype 'int'."
 
@@ -234,7 +209,7 @@ def test_add_filenames_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test3 = True
-    assert test3 == True, "Test failed!\
+    assert test3, "Test failed!\
         The add_filenames function is not\
         responsive to the wrong input datatype 'float'."
 
@@ -245,7 +220,7 @@ def test_add_filenames_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test4 = True
-    assert test4 == True, "Test failed!\
+    assert test4, "Test failed!\
         The add_filenames function is not\
         responsive to the wrong input datatype 'list'."
 
@@ -256,7 +231,7 @@ def test_add_filenames_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test5 = True
-    assert test5 == True, "Test failed!\
+    assert test5, "Test failed!\
         The add_filenames function is not\
         responsive to the wrong input datatype 'tuple'."
 
@@ -267,7 +242,7 @@ def test_add_filenames_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test6 = True
-    assert test6 == True, "Test failed! The add_filenames\
+    assert test6, "Test failed! The add_filenames\
         function is not responsive to the wrong input datatype 'str'."
 
     input_6 = False
@@ -277,10 +252,10 @@ def test_add_filenames_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test7 = True
-    assert test7 == True, "Test failed!\
+    assert test7, "Test failed!\
         The add_filenames function is not\
         responsive to the wrong input datatype 'bool'."
-    return
+    return None
 
 
 def test_prep_data_1():
@@ -302,10 +277,26 @@ def test_prep_data_1():
         output_df['Color'].loc[j] = np.fromstring(rowj, dtype=int, sep=' ')
     for k, rowk in output_df['Shape'].iteritems():
         output_df['Shape'].loc[k] = np.fromstring(rowk, dtype=int, sep=' ')
+    output_df['isPlastic'] = [np.array([1, 0]), np.array([1, 0]),
+                              np.array([0, 1]), np.array([1, 0]),
+                              np.array([0, 1]), np.array([1, 0]),
+                              np.array([1, 0]), np.array([1, 0]),
+                              np.array([0, 1]), np.array([0, 1])]
+    output_df['Color'] = [np.array([0, 0, 1, 0]), np.array([0, 0, 1, 0]),
+                          np.array([0, 0, 0, 1]), np.array([1, 0, 0, 0]),
+                          np.array([0, 1, 0, 0]), np.array([0, 1, 0, 0]),
+                          np.array([0, 0, 1, 0]), np.array([0, 0, 1, 0]),
+                          np.array([0, 1, 0, 0]), np.array([0, 1, 0, 0])]
+    output_df['Shape'] = [np.array([1, 0, 0, 0]), np.array([0, 0, 0, 1]),
+                          np.array([0, 0, 0, 1]), np.array([0, 1, 0, 0]),
+                          np.array([0, 1, 0, 0]), np.array([1, 0, 0, 0]),
+                          np.array([0, 0, 0, 1]), np.array([0, 0, 1, 0]),
+                          np.array([0, 0, 0, 1]), np.array([1, 0, 0, 0])]
     # Check if the expected output data frame is
     # the same as the actual output data frame.
+    result = result.drop(columns=['index'])
     assert output_df.equals(result), "The prep_data function is broken!"
-    return
+    return None
 
 
 def test_prep_data_2():
@@ -321,7 +312,7 @@ def test_prep_data_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test1 = True
-    assert test1 == True, "Test failed!\
+    assert test1, "Test failed!\
         The prep_data function is not\
         responsive to the wrong input datatype 'int'."
 
@@ -332,7 +323,7 @@ def test_prep_data_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test2 = True
-    assert test2 == True, "Test failed!\
+    assert test2, "Test failed!\
         The prep_data function is not\
         responsive to the wrong input datatype 'float'."
 
@@ -343,7 +334,7 @@ def test_prep_data_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test3 = True
-    assert test3 == True, "Test failed!\
+    assert test3, "Test failed!\
         The prep_data function is not\
         responsive to the wrong input datatype 'list'."
 
@@ -354,7 +345,7 @@ def test_prep_data_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test4 = True
-    assert test4 == True, "Test failed!\
+    assert test4, "Test failed!\
         The prep_data function is not\
         responsive to the wrong input datatype 'tuple'."
 
@@ -365,7 +356,7 @@ def test_prep_data_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test5 = True
-    assert test5 == True, "Test failed!\
+    assert test5, "Test failed!\
         The prep_data function is not\
         responsive to the wrong input datatype 'str'."
 
@@ -376,10 +367,10 @@ def test_prep_data_2():
     except Exception as e:
         assert isinstance(e, TypeError), "Wrong type of error."
         test6 = True
-    assert test6 == True, "Test failed!\
+    assert test6, "Test failed!\
         The prep_data function is not\
         responsive to the wrong input datatype 'bool'."
-    return
+    return None
 
 
 def test_tenX_dataset():
@@ -407,4 +398,35 @@ def test_tenX_dataset():
         "The getitem method in class tenX_dataset is broken!"
     assert tenX[1]['plastic'][0] == 1,\
         "The getitem method in class tenX_dataset is broken!"
-    return
+    return None
+
+
+def test_split_sample():
+    df = pd.read_csv('tests/test_data/10x_labels_5.csv')
+    new = prep.split_sample(df)
+    assert new.iloc[0]['Sample'][0] == '252_2', 'Split sample incorrect value!'
+    assert len(new.iloc[9]['Sample']) == 2, 'Split sample incorrect list!'
+    assert isinstance(new.iloc[5]['Sample'], list), 'Split sample\
+        incorrect type!'
+    return None
+
+
+def test_convert_plastics():
+    df = pd.read_csv('tests/test_data/10x_labels_5.csv')
+    new = prep.convert_plastics(df)
+    assert new.iloc[4]['isPlastic'] == 1, 'Plastic not postively identified!'
+    assert new.iloc[0]['isPlastic'] == 0, 'Non-plastic not correctly\
+            identified!'
+    assert isinstance(new.iloc[9]['isPlastic'], np.integer), 'Incorrect\
+            isPlastic identification'
+    return None
+
+
+def test_split_description():
+    df = pd.read_csv('tests/test_data/10x_labels_5.csv')
+    new = prep.split_description(df)
+    assert new.iloc[0]['Color'] == 'opaque', 'Color ID not correct!'
+    assert new.iloc[9]['Shape'] == 'fiber', 'Shape ID not correct!'
+    assert isinstance(new.iloc[5]['Color'], str), 'Color type not correct!'
+    assert isinstance(new.iloc[8]['Shape'], str), 'Shape type not correct!'
+    return None
