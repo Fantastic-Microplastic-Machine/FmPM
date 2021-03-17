@@ -31,25 +31,27 @@ def test_set_seeds():
     Test if the set_seeds function works.
     """
     seed = 42
-    prep.set_seeds(seed) # Call the set_seeds function.
+    prep.set_seeds(seed)   #Call the set_seeds function.
     # create random datasets using torch.randint,
-    # random.randint, and np.random.randint. 
+    # random.randint, and np.random.randint.
     x = torch.randint(0, 10, (3, 3))
-    y = random.randint(0,100) 
+    y = random.randint(0, 100)
     z = np.random.randint(5, size=(2, 4))
     prep.set_seeds(seed) # Set the same seeds again.
     # Check the random datasets are still the same.
     assert torch.equal(x, torch.randint(0, 10, (3, 3))),\
         "The set_seed function is broken!"
-    assert y == random.randint(0,100), "The set_seed function is broken!"
-    assert np.array_equal(z, np.random.randint(5, size=(2, 4))), "The set_seed function is broken!"
+    assert y == random.randint(0, 100), "The set_seed function is broken!"
+    assert np.array_equal(z, np.random.randint(5, size=(2, 4))),\
+        "The set_seed function is broken!"
     return
+
 
 def test_encode_column_1():
     """
     Test if the encode_column function can generate correct output.
     """
-    labels = pd.read_csv('tests/test_data/10x_labels_4.csv')  
+    labels = pd.read_csv('tests/test_data/10x_labels_4.csv') 
     # Import the csv file containing labels.
     # Create two new columns, color and shape.
     new = labels["Description"].str.split(" ", n=1, expand=True)
@@ -101,7 +103,8 @@ def test_encode_column_1():
 
 def test_encode_column_2():
     """
-    Test if the encode_column function is responsive to a wrong datatype of the input.
+    Test if the encode_column function is responsive
+    to a wrong datatype of the input.
     """
     input_1 = 10
     test1 = False
@@ -111,7 +114,8 @@ def test_encode_column_2():
         assert isinstance(e, ValueError), "Wrong type of error."
         test1 = True
     assert test1 == True, "Test failed!\
-        The encode_column function is not responsive to the wrong input datatype 'int'."
+        The encode_column function is not responsive\
+        to the wrong input datatype 'int'."
 
     labels = pd.read_csv('tests/test_data/10x_labels_4.csv')
     new = labels["Description"].str.split(" ", n=1, expand=True)
@@ -123,7 +127,8 @@ def test_encode_column_2():
         assert isinstance(e, ValueError), "Wrong type of error."
         test2 = True
     assert test2 == True, "Test failed!\
-        The encode_column function is not responsive to the wrong input datatype '1D array'."
+        The encode_column function is not responsive
+        to the wrong input datatype '1D array'."
 
     input_3 = [1, 2, 3]
     test3 = False
@@ -144,7 +149,8 @@ def test_encode_column_2():
         assert isinstance(e, ValueError), "Wrong type of error."
         test4 = True
     assert test4 == True, "Test failed!\
-        The encode_column function is not responsive to the wrong input datatype 'str'."
+        The encode_column function is not\
+        responsive to the wrong input datatype 'str'."
 
     input_5 = True
     test5 = False
@@ -191,6 +197,7 @@ def test_add_filenames_1():
     # is the same as the actual output data frame.
     assert output_df.equals(result), "The add_filenames function is broken!"
     return
+
 
 def test_add_filenames_2():
     """
@@ -239,7 +246,8 @@ def test_add_filenames_2():
         assert isinstance(e, TypeError), "Wrong type of error."
         test4 = True
     assert test4 == True, "Test failed!\
-        The add_filenames function is not responsive to the wrong input datatype 'list'."
+        The add_filenames function is not\
+        responsive to the wrong input datatype 'list'."
 
     input_4 = (1, 2, 3)
     test5 = False
@@ -302,7 +310,8 @@ def test_prep_data_1():
 
 def test_prep_data_2():
     """
-    Test if the prep_data function is responsive to a wrong datatype of the input.
+    Test if the prep_data function is responsive
+    to a wrong datatype of the input.
     """
     image_dir = 'tests/test_data/images_10x'
     input_1 = 10
