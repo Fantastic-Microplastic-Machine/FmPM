@@ -35,8 +35,8 @@ install:
     - conda install --yes coverage coveralls flake8
 
 # a list of commands to run before the main script
-before_script:
-    - flake8 fmpm
+# before_script:
+#    - flake8 fmpm
 
 # the actual commands to run
 script:

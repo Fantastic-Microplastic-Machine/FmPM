@@ -1,6 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> main
 #Photos
-fmpm/will/data/
+fmpm/will/
+fmpm/Liwen/data/
 
 
 #COPIED FROM https://github.com/github/gitignore/blob/master/Python.gitignore#L2
@@ -142,6 +146,7 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+<<<<<<< HEAD
 =======
 #Photos
 fmpm/will/data/
@@ -286,4 +291,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+>>>>>>> main
+=======
 >>>>>>> main

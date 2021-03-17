@@ -68,27 +68,6 @@ def encode_column(column):
     return list(shape_arr)
 
 
-def remove_nones(df):
-    """
-    Removes rows of DataFrame that contain no file name in 'File' column.
-
-    Parameters
-    ----------
-    df: DataFrame
-        DataFrame should have a 'File' column
-
-    Returns
-    -------
-    DataFrame
-        Updated DataFrame without Nones in column 'File'
-    """
-    for index, row in df.iterrows():
-        if row['File'] is None:
-            df.drop(index, inplace=True)
-    df = df.reset_index(drop=True)
-    return df
-
-
 def add_filenames(labels, image_root):
     """
     Adds column to DataFrame titled 'File' that contains the file name
@@ -193,7 +172,8 @@ def convert_plastics(labels):
         'PET',
         'carbon fiber',
         'polyamide resin',
-        'PVC']
+        'PVC',
+        'plastic']
     identification = labels['Identification']
 
     for i in range(0, len(identification)):
