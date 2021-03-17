@@ -139,7 +139,7 @@ def test_get_predictions():
     images, labels, predictions, weights, acc =\
         construct.get_predictions(1, model, dataset)
     assert labels.size() == torch.Size([12, 2]),\
-        f'get_predictions error, incorrect labels dimensions'
+        f'{get_predictions error, incorrect labels dimensions}'
     assert isinstance(acc.item(), float),\
         f'get_predictions error, incorrect accuracy dtype'
     assert weights.size() == torch.Size([12, 2]),\
