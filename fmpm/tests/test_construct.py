@@ -1,3 +1,4 @@
+import os.path
 from fmpm import construct
 import math
 from fmpm import prep
@@ -245,6 +246,41 @@ def test_save_model():
 
     except Exception as e:
         assert False, f'save model error, {e}'
+    return None
+
+def test_save_model_2():
+    """
+    Testing the save_model function. 
+    """
+    empty_model = construct.default()
+    notmodel1 = [1, 2, 3]
+    notmodel2 = int(42)
+    notmodel3 = pd.DataFrame([1,2,3],[1,2,3])
+    
+    construct.save_model(empty_model,'tests/test_data/save_model_test1.pth')
+    assert os.path.exists('tests/test_data/save_model_test1.pth'), 'Model\
+        not saving correctly!'
+    
+    test2 = False
+    try:
+        construct.save_model(notmodel1, 'tests/test_data/save_model_test2.pth')
+    except Exception as e:
+        assert isinstance(e, AttributeError), 'Save model wrong\
+            type of error!'
+        test2 = True
+    assert test2, 'Test failed! Save model not responsive\
+        to wrong input of type list.'
+   
+    test3 = False
+    try:
+        construct.save_model(notmodel2, 'tests/test_data/save_model_test3.pth')
+    except Exception as e:
+        assert isinstance(e, AttributeError), 'Save model wrong\
+            type of error!'
+        test3 = True
+    assert test3, 'Test failed! Save model not responsive\
+        to wrong input of type int.'
+    return None
 
 
 def test_load_model_from_file():
@@ -287,3 +323,4 @@ def test_load_model_from_file():
                                        model)
     except Exception as e:
         assert False, f'load model error, {e}'
+    return None
