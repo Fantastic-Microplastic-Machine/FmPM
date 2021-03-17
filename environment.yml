@@ -5,15 +5,14 @@ channels:
   - conda-forge
 dependencies:
   - altair
-  - matplotlib=3.3.4
-  - numpy=1.19.2
-  - pandas=1.2.3
-  - pip=20.3.3
-  - python=3.7.6
-  - pytorch>=1.7.0
-  - scikit-image=0.16.2
-  - scikit-learn=0.23.2
-  - scipy=1.4.1
-  - seaborn=0.11.1
-  - torchvision=0.6
-  - torchtext=0.6
+  - matplotlib
+  - numpy
+  - pandas
+  - pip
+  - python
+  - pytorch
+  - scikit-image
+  - scikit-learn
+  - scipy
+  - seaborn
+  - torchvision
