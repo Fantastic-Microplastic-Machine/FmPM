@@ -3,6 +3,6 @@ omit =
     */python?.?/*
     */site-packages/nose/*
     *__init__*
-    *test*
+    *tests*
 exclude_lines =
     if __name__ == .__main__.:
