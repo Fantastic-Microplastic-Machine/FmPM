@@ -6,7 +6,6 @@ channels:
 dependencies:
   - _pytorch_select=0.1
   - altair=4.1.0
-  - appnope=0.1.2
   - argon2-cffi=20.1.0
   - async_generator=1.10
   - attrs=20.3.0
@@ -66,7 +65,6 @@ dependencies:
   - libdeflate=1.7
   - libedit=3.1.20191231
   - libffi=3.3
-  - libgfortran=3.0.1
   - libiconv=1.16
   - libpng=1.6.37
   - libsodium=1.0.18
