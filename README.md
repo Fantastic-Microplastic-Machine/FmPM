@@ -40,7 +40,7 @@ conda activate fmpm
 
 Next Steps: Override defaults with custom options, k-fold cross validation (kfold.py), save/load models to file (construct.py)
 
-Take a look at the [examples.ipynb](https://github.com/Fantastic-Microplastic-Machine/FmPM/blob/main/examples.ipynb) for more details.
+See [examples.ipynb](https://github.com/Fantastic-Microplastic-Machine/FmPM/blob/main/examples.ipynb) for more details.
 
 ## Authors
 Will Ballengee - Chemical engineering, MS
