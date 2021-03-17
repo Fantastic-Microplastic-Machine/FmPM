@@ -175,7 +175,7 @@ def test_train():
     mod, loss, acc = construct.train(2, 1, dataset)
     assert isinstance(loss[0], float), f'train failed, returned wrong dataype for loss: {loss.type()}'
     assert isinstance(acc[0], float), f'train failed, returned wrong dataype for accuracy: {acc.type()}'
-    assert len(loss) is 3, f'train failed, incorrect length of loss list. Expected 3, got {len(loss)}'
+    assert len(loss) == 3, f'train failed, incorrect length of loss list. Expected 3, got {len(loss)}'
 
 
 def test_save_model():
