@@ -1,5 +1,4 @@
 from fmpm import construct
-import torch
 import math
 from fmpm import prep
 import torchvision
@@ -58,7 +57,7 @@ def test_train_iteration():
     model = test_model()
     image_dir = 'tests/test_data/images_10x'
     data = prep.prep_data(pd.read_csv('tests/test_data/10x_labels_4.csv'),
-           image_dir)
+                          image_dir)
     image_dir = 'tests/test_data/images_10x'
     opt = torch.optim.Adam(model.parameters(), lr=.01)
     crit = torch.nn.CrossEntropyLoss()
@@ -76,11 +75,14 @@ def test_train_iteration():
                                            batch_size=1)
 
     loss, acc, pred, label = construct.train_iteration(model,
-        iterator, opt, crit, device)
+                                                       iterator,
+                                                       opt,
+                                                       crit,
+                                                       device)
     assert isinstance(loss, float), f'train_iteration error,
         wrong loss dtype {loss.type()}'
-    assert isinstance(acc, float), f'train_iteration error,
-        wrong acc dtype {acc.type()}'
+    assert isinstance(acc, float),
+        f'train_iteration error, wrong acc dtype {acc.type()}'
     assert pred.size() == torch.Size([1, 2]),
         f'train_iteration error, prediction wrong shape/size {pred.size()}'
     assert label.size() == torch.Size([1, 2]),
@@ -198,8 +200,7 @@ def test_train():
     assert isinstance(loss[0], float), f'train failed,
         returned wrong dataype for loss: {loss.type()}'
     assert isinstance(acc[0], float), f'train failed,
-        returned wrong dataype for accuracy:
-                                {acc.type()}'
+        returned wrong dataype for accuracy: {acc.type()}'
     assert len(loss) == 3, f'train failed,
         incorrect length of loss list. Expected 3, got {len(loss)}'
 
@@ -225,18 +226,18 @@ def test_save_model():
                                                track_running_stats=True)
 
     def forward(self, x):
-            """Function that performs all the neural
-            network forward calculation i.e.
-            takes image data from the input
-            of the neural network to the output"""
-            x = self.conv1(x)
-            x = self.batch1(x)
-            x = torch.nn.functional.max_pool2d(x, kernel_size=10)
-            x = torch.nn.functional.leaky_relu(x)
-            x = x.view(x.shape[0], -1)
-            x = self.fc_1(x)
-            x = torch.nn.functional.leaky_relu(x)
-            return x
+        """Function that performs all the neural
+        network forward calculation i.e.
+        takes image data from the input
+        of the neural network to the output"""
+        x = self.conv1(x)
+        x = self.batch1(x)
+        x = torch.nn.functional.max_pool2d(x, kernel_size=10)
+        x = torch.nn.functional.leaky_relu(x)
+        x = x.view(x.shape[0], -1)
+        x = self.fc_1(x)
+        x = torch.nn.functional.leaky_relu(x)
+        return x
 
     model = test_model()
     try:
