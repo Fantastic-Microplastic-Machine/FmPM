@@ -26,6 +26,7 @@ conda env create -f environment.yml
 ```
 conda activate fmpm
 ```
+Take a look at the [examples.ipynb]('https://github.com/Fantastic-Microplastic-Machine/FmPM/blob/main/examples.ipynb') for more details.
 
 ## Authors
 Will Ballengee - Chemical engineering, MS
