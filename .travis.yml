@@ -38,7 +38,7 @@ before_script:
 
 # the actual commands to run
 script:
-    - coverage run -m nose
+    - coverage run -m nose --with-coverage
 
 # generate a coverage report to send to back to user
 after_success:
