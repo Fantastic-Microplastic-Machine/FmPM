@@ -16,7 +16,6 @@ Current plastics identified: 'polystyrene', 'polyethylene','polypropylene',
 'Nylon', 'ink + plastic','PET','carbon fiber','polyamide resin', and 'PVC'
 
 """
-
 import os
 import random
 import re
@@ -26,6 +25,7 @@ import skimage.io
 import skimage.transform
 import sklearn.preprocessing
 import torch
+import torchvision
 
 
 def set_seeds(seed):
@@ -240,7 +240,9 @@ class tenX_dataset(torch.utils.data.Dataset):
         for the images.
     """
 
-    def __init__(self, labels_frame, image_dir, transform=None):
+    def __init__(self, labels_frame, image_dir,
+                 transform=torchvision.transforms.
+                 Compose([torchvision.transforms.ToTensor()])):
         """
         Initializes an instance of the class.
 
