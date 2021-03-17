@@ -36,7 +36,7 @@ install:
 
 # a list of commands to run before the main script
 before_script:
-    - flake8 codebase
+    - flake8 test-environment
 
 # the actual commands to run
 script:
