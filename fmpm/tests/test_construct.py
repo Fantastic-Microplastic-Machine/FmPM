@@ -14,13 +14,13 @@ def test_calculate_accuracy():
     labels = torch.tensor([1, 1, 0, 0])
     ret = construct.calculate_accuracy(predict, labels)
     expected = .75
-    assert math.isclose(ret.item(), expected),
+    assert math.isclose(ret.item(), expected),\
         'Failed to calculate accuracy correctly'
     predict = torch.tensor([[1, 0], [0, 1], [1, 0], [1, 0]])
     labels = torch.tensor([1, 0, 0, 0])
     ret = construct.calculate_accuracy(predict, labels)
     expected = .50
-    assert math.isclose(ret.item(), expected),
+    assert math.isclose(ret.item(), expected),\
         'Failed to calculate accuracy correctly'
 
 
@@ -79,13 +79,13 @@ def test_train_iteration():
                                                        opt,
                                                        crit,
                                                        device)
-    assert isinstance(loss, float), f'train_iteration error,
+    assert isinstance(loss, float), f'train_iteration error,\
         wrong loss dtype {loss.type()}'
-    assert isinstance(acc, float),
+    assert isinstance(acc, float),\
         f'train_iteration error, wrong acc dtype {acc.type()}'
-    assert pred.size() == torch.Size([1, 2]),
+    assert pred.size() == torch.Size([1, 2]),\
         f'train_iteration error, prediction wrong shape/size {pred.size()}'
-    assert label.size() == torch.Size([1, 2]),
+    assert label.size() == torch.Size([1, 2]),\
         f'train_iteration error, label wrong shape/size {label.size()}'
 
 
@@ -135,17 +135,17 @@ def test_get_predictions():
                             torchvision.transforms.ToTensor()
                                       ])
     dataset = prep.tenX_dataset(data, image_dir, transforms)
-    images, labels, predictions, weights, acc =
+    images, labels, predictions, weights, acc =\
         construct.get_predictions(1, model, dataset)
-    assert labels.size() == torch.Size([12, 2]),
+    assert labels.size() == torch.Size([12, 2]),\
         f'get_predictions error, incorrect labels dimensions'
-    assert isinstance(acc.item(), float),
+    assert isinstance(acc.item(), float),\
         f'get_predictions error, incorrect accuracy dtype'
-    assert weights.size() == torch.Size([12, 2]),
+    assert weights.size() == torch.Size([12, 2]),\
         f'get_predictions error, incorrect weight dimensions'
-    assert predictions.size() == torch.Size([12]),
+    assert predictions.size() == torch.Size([12]),\
         f'get_predictions error, incorrect predictions dimensions'
-    assert images.size() == torch.Size([12, 3, 325, 325]),
+    assert images.size() == torch.Size([12, 3, 325, 325]),\
         f'get_predictions error, incorrect image'
 
 
@@ -197,11 +197,11 @@ def test_train():
     dataset = prep.tenX_dataset(data, image_dir, transforms)
 
     mod, loss, acc = construct.train(2, 1, dataset)
-    assert isinstance(loss[0], float), f'train failed,
+    assert isinstance(loss[0], float), f'train failed,\
         returned wrong dataype for loss: {loss.type()}'
-    assert isinstance(acc[0], float), f'train failed,
+    assert isinstance(acc[0], float), f'train failed,\
         returned wrong dataype for accuracy: {acc.type()}'
-    assert len(loss) == 3, f'train failed,
+    assert len(loss) == 3, f'train failed,\
         incorrect length of loss list. Expected 3, got {len(loss)}'
 
 
