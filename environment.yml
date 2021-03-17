@@ -16,3 +16,4 @@ dependencies:
   - scipy
   - seaborn
   - torchvision
+prefix: /opt/anaconda3/envs/fmpm
