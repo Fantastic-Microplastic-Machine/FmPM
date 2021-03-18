@@ -187,7 +187,8 @@ def test_train():
             return x
 
     image_dir = 'tests/test_data/images_10x'
-    data = prep.prep_data(pd.read_csv('/fmpm/tests/test_data/10x_labels_4.csv'),
+    data = prep.prep_data(pd.read_csv('\
+/fmpm/tests/test_data/10x_labels_4.csv'),
                           image_dir)
     transforms = torchvision.transforms.Compose([
                             torchvision.transforms.ToPILImage(),
