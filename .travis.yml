@@ -32,7 +32,7 @@ before_install:
 install:
     - conda env create -q -n test-environment python=$TRAVIS_PYTHON_VERSION --file environment.yml
     - conda activate test-environment
-      #- conda install --yes coverage coveralls flake8
+    - conda install --yes coverage coveralls flake8
 
 # a list of commands to run before the main script
 before_script:
@@ -41,7 +41,6 @@ before_script:
 # the actual commands to run
 script:
     - nosetests --with-coverage --where ./fmpm/ 
-  #- nosetests --with-coverage ./fmpm/
 
 # generate a coverage report to send to back to user
 after_success:
