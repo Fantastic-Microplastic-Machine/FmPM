@@ -5,7 +5,9 @@ Designed to be used for single-particle, 10X microscopy data.
 Depends on prep.py module for preparing data.
 Also includes functions for saving and loading models from files.
 """
+import copy
 import torch
+from sklearn.model_selection import KFold
 
 
 class default(torch.nn.Module):
@@ -280,6 +282,77 @@ def get_predictions(batch_size, model, dataset, device=torch.device('cpu')):
     predictions = torch.cat(predictions, dim=0)
     acc = (labels[:, 1] == predictions).float().sum() / len(predictions)
     return images, labels, predictions, weights, acc
+
+
+def k_fold(
+        n_splits,
+        epochs,
+        batch_size,
+        transforms,
+        criterion,
+        model,
+        dataset,
+        device):
+    """
+    Perform K-fold cross validation.
+
+    Parameters
+    ----------
+    n_splits: int
+        Number of splits to make of the data.
+    epochs: int
+        Number of times to pass the data through the CNN.
+    batch_size: int
+        Number of samples to pass through at a time.
+    transforms: pytorch object
+        Transformations to make on the images.
+    criterion: pytorch object
+        Defines the loss function for training the model.
+    model: custom pytorch object
+        Architecture of the CNN in a pytorch object.
+    dataset: tenX_dataset
+        Instance of tenX_dataset class.
+    device: pytorch device object
+        Device on which calculations are being performed.
+
+
+    Returns
+    -------
+    models: list of pytorch objects
+        Each element is a CNN model object.
+    losses: list of lists of floats
+        List of loss value lists.
+    train_accs: list of lists of floats
+        List of accuracy value lists.
+    naive_accs: list of floats
+        List of accuracies if only non-plastic (0) is predicted.
+    test_accs: list of floats
+        List of accurcies of the models on the test proportion.
+    """
+    kf = KFold(n_splits=n_splits, shuffle=True)
+    models = []
+    losses = []
+    train_accs = []
+    test_accs = []
+    naive_accs = []
+
+    for train_idx, val_idx in kf.split(range(len(dataset))):
+        optimizer = torch.optim.Adam(model.parameters(), lr=.0015)
+        curr_model = copy.deepcopy(model)
+        train_data = torch.utils.data.dataset.Subset(dataset, train_idx)
+        val_data = torch.utils.data.dataset.Subset(dataset, val_idx)
+        cnn, train_loss, train_acc = train(
+                epochs, batch_size, train_data,
+                criterion, optimizer, curr_model, device)
+        models.append(cnn)
+        train_accs.append(train_acc)
+        losses.append(train_loss)
+        images, labels, predictions, weights, test_acc =\
+            get_predictions(batch_size, cnn, val_data)
+        test_accs.append(test_acc)
+        naive_accs.append((labels[:, 1] == 0).float().sum() / len(predictions))
+
+    return models, losses, train_accs, naive_accs, test_accs
 
 
 def save_model(network, path):

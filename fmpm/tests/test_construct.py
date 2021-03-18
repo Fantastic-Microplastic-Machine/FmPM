@@ -1,11 +1,43 @@
 import os.path
 from fmpm import construct
-import math
 from fmpm import prep
+import math
 import torchvision
 import torch
 import pandas as pd
 pd.options.mode.chained_assignment = None
+
+
+class test_model(torch.nn.Module):
+    def __init__(self):
+        """
+        Initializes CNN. Here we just define layer
+        shapes that we call in the forward func
+        """
+        super().__init__()
+
+        self.conv1 = torch.nn.Conv2d(in_channels=3,
+                                     out_channels=6,
+                                     kernel_size=5)
+        self.fc_1 = torch.nn.Linear(600, 2)
+        self.batch1 = torch.nn.BatchNorm2d(6, eps=1e-05,
+                                           momentum=0.1,
+                                           affine=True,
+                                           track_running_stats=True)
+
+    def forward(self, x):
+        """Function that performs all the
+        neural network forward calculation i.e.
+        takes image data from the input of the
+        neural network to the output"""
+        x = self.conv1(x)
+        x = self.batch1(x)
+        x = torch.nn.functional.max_pool2d(x, kernel_size=30)
+        x = torch.nn.functional.leaky_relu(x)
+        x = x.view(x.shape[0], -1)
+        x = self.fc_1(x)
+        x = torch.nn.functional.leaky_relu(x)
+        return x
 
 
 def test_calculate_accuracy():
@@ -28,34 +60,6 @@ def test_calculate_accuracy():
 
 def test_train_iteration():
     """ Tests return types and sizes of train_iteration """
-    class test_model(torch.nn.Module):
-        def __init__(self):
-            """Initializes CNN. Here we just define
-            layer shapes that we call in the forward func """
-            super().__init__()
-            self.conv1 = torch.nn.Conv2d(in_channels=3,
-                                         out_channels=6,
-                                         kernel_size=5)
-            self.fc_1 = torch.nn.Linear(32*32*6, 2)
-            self.batch1 = torch.nn.BatchNorm2d(6, eps=1e-05,
-                                               momentum=0.1,
-                                               affine=True,
-                                               track_running_stats=True)
-
-        def forward(self, x):
-            """Function that performs all the neural
-            network forward calculation i.e.
-            takes image data from the input of the
-            neural network to the output """
-            x = self.conv1(x)
-            x = self.batch1(x)
-            x = torch.nn.functional.max_pool2d(x, kernel_size=10)
-            x = torch.nn.functional.leaky_relu(x)
-            x = x.view(x.shape[0], -1)
-            x = self.fc_1(x)
-            x = torch.nn.functional.leaky_relu(x)
-            return x
-
     model = test_model()
     image_dir = 'tests/test_data/images_10x'
     data = prep.prep_data(pd.read_csv('tests/test_data/10x_labels_4.csv'),
@@ -95,37 +99,6 @@ def test_get_predictions():
     """
     Tests return types and sizes of get_predictions
     """
-    class test_model(torch.nn.Module):
-        def __init__(self):
-            """
-            Initializes CNN. Here we just define layer
-            shapes that we call in the forward func
-            """
-            super().__init__()
-
-            self.conv1 = torch.nn.Conv2d(in_channels=3,
-                                         out_channels=6,
-                                         kernel_size=5)
-            self.fc_1 = torch.nn.Linear(32*32*6, 2)
-            self.batch1 = torch.nn.BatchNorm2d(6, eps=1e-05,
-                                               momentum=0.1,
-                                               affine=True,
-                                               track_running_stats=True)
-
-        def forward(self, x):
-            """Function that performs all the
-            neural network forward calculation i.e.
-            takes image data from the input of the
-            neural network to the output"""
-            x = self.conv1(x)
-            x = self.batch1(x)
-            x = torch.nn.functional.max_pool2d(x, kernel_size=10)
-            x = torch.nn.functional.leaky_relu(x)
-            x = x.view(x.shape[0], -1)
-            x = self.fc_1(x)
-            x = torch.nn.functional.leaky_relu(x)
-            return x
-
     model = test_model()
     image_dir = 'tests/test_data/images_10x'
     data = prep.prep_data(pd.read_csv('tests/test_data/10x_labels_4.csv'),
@@ -155,37 +128,6 @@ def test_train():
     """
     Tests returns types and sizes of train
     """
-    class test_model(torch.nn.Module):
-        def __init__(self):
-            """Initializes CNN. Here we just define layer
-            shapes that we call in the forward func"""
-            super().__init__()
-
-            self.conv1 = torch.nn.Conv2d(in_channels=3,
-                                         out_channels=6,
-                                         kernel_size=5)
-            self.fc_1 = torch.nn.Linear(32*32*6, 2)
-            self.batch1 = torch.nn.BatchNorm2d(6, eps=1e-05,
-                                               momentum=0.1,
-                                               affine=True,
-                                               track_running_stats=True)
-
-        def forward(self, x):
-            """
-            Function that performs all the neural
-            network forward calculation i.e.
-            takes image data from the input of the
-            neural network to the output
-            """
-            x = self.conv1(x)
-            x = self.batch1(x)
-            x = torch.nn.functional.max_pool2d(x, kernel_size=10)
-            x = torch.nn.functional.leaky_relu(x)
-            x = x.view(x.shape[0], -1)
-            x = self.fc_1(x)
-            x = torch.nn.functional.leaky_relu(x)
-            return x
-
     image_dir = 'tests/test_data/images_10x'
     data = prep.prep_data(pd.read_csv('tests/test_data/10x_labels_4.csv'),
                           image_dir)
@@ -206,40 +148,49 @@ def test_train():
         incorrect length of loss list. Expected 3, got {len(loss)}'
 
 
+def test_kfold():
+    model = test_model()
+    n_splits = 5
+    epochs = 2
+    batch_size = 1
+    transforms = torchvision.transforms.Compose([
+                            torchvision.transforms.ToPILImage(),
+                            torchvision.transforms.RandomRotation((-180, 180)),
+                            torchvision.transforms.CenterCrop((325)),
+                            torchvision.transforms.ToTensor()])
+    crit = torch.nn.CrossEntropyLoss()
+    image_dir = 'tests/test_data/images_10x'
+    df = prep.prep_data(pd.read_csv('tests/test_data/10x_labels_4.csv'),
+                        image_dir)
+    data = prep.tenX_dataset(df, image_dir, transforms)
+    device = torch.device('cpu')
+    models, losses, train_accs,\
+        naive_accs, test_accs = construct.k_fold(n_splits,
+                                                 epochs, batch_size,
+                                                 transforms, crit,
+                                                 model,
+                                                 data, device)
+
+    assert len(losses) is n_splits, f'kfold failed,\
+        expected {n_splits} loss values, but got {len(losses)}'
+    assert len(train_accs) is n_splits, f'kfold failed,\
+        expected {n_splits} train lists, but got {len(train_accs)}'
+    assert len(train_accs[0]) is (epochs + 1), f'kflod failed,\
+        expected {epochs + 1} length train lists, but got {len(train_accs[0])}'
+    assert len(naive_accs) is n_splits, f'kfold failed,\
+        expected {n_splits} naive accs, but got {len(naive_accs)}'
+    assert len(test_accs) is n_splits, f'kfold failed,\
+        expected {n_splits} val accs, but got {len(test_accs)}'
+    assert isinstance(test_accs[0].item(), float), f'kflod failed,\
+        expected float, but got {test_accs[0].item().type()}'
+    assert isinstance(naive_accs[0].item(), float), f'kflod failed,\
+        expected float, but got {test_accs[0].item().type()}'
+
+
 def test_save_model():
     """
     Tests for runtime errors in save_model
     """
-    class test_model(torch.nn.Module):
-        def __init__(self):
-            """Initializes CNN. Here we just define layer
-            shapes that we call in the forward func"""
-            super().__init__()
-
-            self.conv1 = torch.nn.Conv2d(in_channels=3,
-                                         out_channels=6,
-                                         kernel_size=5)
-            self.fc_1 = torch.nn.Linear(32*32*6, 2)
-            self.batch1 = torch.nn.BatchNorm2d(6,
-                                               eps=1e-05,
-                                               momentum=0.1,
-                                               affine=True,
-                                               track_running_stats=True)
-
-    def forward(self, x):
-        """Function that performs all the neural
-        network forward calculation i.e.
-        takes image data from the input
-        of the neural network to the output"""
-        x = self.conv1(x)
-        x = self.batch1(x)
-        x = torch.nn.functional.max_pool2d(x, kernel_size=10)
-        x = torch.nn.functional.leaky_relu(x)
-        x = x.view(x.shape[0], -1)
-        x = self.fc_1(x)
-        x = torch.nn.functional.leaky_relu(x)
-        return x
-
     model = test_model()
     try:
         construct.save_model(model, 'tests/test_data/test_saved_model')
@@ -287,36 +238,6 @@ def test_load_model_from_file():
     """
     Tests for runtime errors in load_model
     """
-    class test_model(torch.nn.Module):
-        def __init__(self):
-            """ Initializes CNN. Here we just define layer
-            shapes that we call in the forward func """
-            super().__init__()
-
-            self.conv1 = torch.nn.Conv2d(in_channels=3,
-                                         out_channels=6,
-                                         kernel_size=5)
-            self.fc_1 = torch.nn.Linear(32*32*6, 2)
-            self.batch1 = torch.nn.BatchNorm2d(6,
-                                               eps=1e-05,
-                                               momentum=0.1,
-                                               affine=True,
-                                               track_running_stats=True)
-
-        def forward(self, x):
-            """ Function that performs all the neural
-            network forward calculation i.e.
-            takes image data from the input of
-            the neural network to the output """
-            x = self.conv1(x)
-            x = self.batch1(x)
-            x = torch.nn.functional.max_pool2d(x, kernel_size=10)
-            x = torch.nn.functional.leaky_relu(x)
-            x = x.view(x.shape[0], -1)
-            x = self.fc_1(x)
-            x = torch.nn.functional.leaky_relu(x)
-            return x
-
     model = test_model()
     try:
         construct.load_model_from_file('tests/test_data/test_saved_model',
