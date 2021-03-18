@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.com/Fantastic-Microplastic-Machine/FmPM.svg?branch=main)](https://travis-ci.com/github/Fantastic-Microplastic-Machine/FmPM)
-
+[![Coverage Status](https://coveralls.io/repos/github/Fantastic-Microplastic-Machine/FmPM/badge.svg?branch=main)](https://coveralls.io/github/Fantastic-Microplastic-Machine/FmPM?branch=main)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 # FmPM - Fantastic μPlastic Machine
