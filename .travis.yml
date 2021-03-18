@@ -40,7 +40,7 @@ before_script:
 
 # the actual commands to run
 script:
-    - coverage run nosetests ./fmpm/
+    - nosetests --with-coverage ./fmpm/ 
   #- nosetests --with-coverage ./fmpm/
 
 # generate a coverage report to send to back to user
