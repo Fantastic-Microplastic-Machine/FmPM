@@ -5,8 +5,8 @@ language: python
 # note that all of the versions listed will be tried
 matrix:
     include:
-        - python: 3.5
-        - python: 3.6
+      # - python: 3.5
+      #  - python: 3.6
         - python: 3.7
 
 # what branches should be evaluated
@@ -40,7 +40,7 @@ before_script:
 
 # the actual commands to run
 script:
-    - nosetests --with-coverage 2>test_result
+    - nosetests --with-coverage ./fmpm/
 
 # generate a coverage report to send to back to user
 after_success:
